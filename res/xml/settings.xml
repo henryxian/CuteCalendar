@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory 
+        android:title="test" >
+    <com.henryxian.TimePickerPreference 
+        android:key="TimePreference"
+        android:dialogMessage="message"
+        android:dialogTitle="時間"
+        android:positiveButtonText="ok"
+        android:negativeButtonText="cancel"
+        android:title="@string/time_picker_title"
+        android:summary="@string/time_picker_summary"
+        />	
+        <CheckBoxPreference
+                android:key="checkbox_preference"
+                android:title="test"
+                android:summary="test" />
+    <com.henryxian.DatePickerPreference
+        android:key="DatePreference"
+        android:dialogMessage="@string/date_picker_dialog_message"
+        android:dialogTitle="@string/date_picker_dialog_title"
+        android:positiveButtonText="ok"
+        android:negativeButtonText="cancel"
+        android:title="@string/date_picker_title"
+        android:summary="@string/date_picker_summary"
+        />
+	</PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/text_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" 
+        />
+    <TextView 
+        android:id="@+id/text_display2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world2"
+        />
+	<Button 
+	    android:id="@+id/button_to_settings"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="settings"
+	    />
+</LinearLayout>
