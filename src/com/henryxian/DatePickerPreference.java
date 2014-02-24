@@ -26,17 +26,17 @@ public class DatePickerPreference extends DialogPreference {
 		setNegativeButtonText(R.string.dialog_negative_button);
 	}
 	
-	private int getYear(String date) {
+	public static int getYear(String date) {
 		String[] pieces = date.split("-");
 		return Integer.parseInt(pieces[0]);
 	}
 	
-	private int getMonth(String date) {
+	public static int getMonth(String date) {
 		String[] pieces = date.split("-");
 		return Integer.parseInt(pieces[1]);
 	}
 	
-	private int getDay(String date) {
+	public static int getDay(String date) {
 		String[] pieces = date.split("-");
 		return Integer.parseInt(pieces[2]);
 	}
