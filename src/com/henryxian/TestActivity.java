@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnSharedPreferenceChangeListener {
+public class TestActivity extends Activity implements OnSharedPreferenceChangeListener {
 	// private final static String 
 	private static final String TAG = "MainActivity";
 	public static final String PREFS_TIME = "TimePreference";
@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				startActivity(new Intent(MainActivity.this, TimePreferenceActivity.class));
+				startActivity(new Intent(TestActivity.this, TimePreferenceActivity.class));
 			}
 		});
 		
@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 			String sp = sharedPreferences.getString(key, "2013-2-22");
 			TextView textView = (TextView) findViewById(R.id.text_display);
 			textView.setText(sp);
-			Toast.makeText(this, "change!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "change!", Toast.LENGTH_LONG).show();
 		}
 		
 		if (key == PREFS_TIME) {
