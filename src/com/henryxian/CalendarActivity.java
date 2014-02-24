@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
@@ -81,5 +83,14 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		}
 		}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+//		return super.onCreateOptionsMenu(menu);
+		menu.add("options")
+			.setIcon(R.drawable.ic_action_settings)
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		return true;
+	}
 
 }
