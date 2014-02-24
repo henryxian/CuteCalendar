@@ -241,7 +241,8 @@ int drawable abs__textfield_searchview_holo_light 0x7f02006c
 int drawable abs__textfield_searchview_right_holo_dark 0x7f02006d
 int drawable abs__textfield_searchview_right_holo_light 0x7f02006e
 int drawable abs__toast_frame 0x7f02006f
-int drawable ic_launcher 0x7f020070
+int drawable ic_action_settings 0x7f020070
+int drawable ic_launcher 0x7f020071
 int id abs__action_bar 0x7f050020
 int id abs__action_bar_container 0x7f05001f
 int id abs__action_bar_subtitle 0x7f050011

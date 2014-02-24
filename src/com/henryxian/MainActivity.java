@@ -1,6 +1,5 @@
 package com.henryxian;
 
-import org.w3c.dom.Text;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -78,7 +77,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 			String sp = sharedPreferences.getString(key, "2013-2-22");
 			TextView textView = (TextView) findViewById(R.id.text_display);
 			textView.setText(sp);
-//			Toast.makeText(this, "change!", Toast.LENGTH_SHORT);
+			Toast.makeText(this, "change!", Toast.LENGTH_LONG).show();
 		}
 		
 		if (key == PREFS_TIME) {
