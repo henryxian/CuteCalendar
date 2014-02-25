@@ -381,6 +381,7 @@ int string dialog_negative_button 0x7f060016
 int string dialog_positive_button 0x7f060017
 int string hello_world 0x7f060018
 int string hello_world2 0x7f060019
+int string menu_settings 0x7f06001a
 int string time_picker_summary 0x7f060015
 int string time_picker_title 0x7f060014
 int string title_activity_settings 0x7f06000f

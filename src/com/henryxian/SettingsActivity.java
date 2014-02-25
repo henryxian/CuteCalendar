@@ -5,9 +5,9 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-public class TimePreferenceActivity extends SherlockPreferenceActivity{
-	private TimePickerPreference timePreference;
-
+public class SettingsActivity extends SherlockPreferenceActivity{
+	private static final String TAG = SettingsActivity.class.getSimpleName();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

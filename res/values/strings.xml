@@ -19,4 +19,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="hello_world2">Hello world2!</string>
     
+    <string name="menu_settings">設置</string>
 </resources>

@@ -36,7 +36,7 @@ public class TestActivity extends Activity implements OnSharedPreferenceChangeLi
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				startActivity(new Intent(TestActivity.this, TimePreferenceActivity.class));
+				startActivity(new Intent(TestActivity.this, SettingsActivity.class));
 			}
 		});
 		
