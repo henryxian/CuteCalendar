@@ -29,7 +29,12 @@
         </activity>
         
         <activity
-            android:name="com.henryxian.SettingsActivity"
+            android:name=".AddEventActivity" 
+            android:label="@string/title_activity_addEvent" >
+        </activity>
+        
+        <activity
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
     </application>

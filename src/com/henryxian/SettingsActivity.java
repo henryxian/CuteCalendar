@@ -19,6 +19,8 @@ public class SettingsActivity extends SherlockPreferenceActivity{
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
+	// TODO pop up alertdialog to warning the user
+	// when change the date.
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub

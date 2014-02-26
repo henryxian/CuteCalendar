@@ -120,6 +120,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		
 		// TODO set the item's intent
 		menu.add(Menu.NONE, 1, Menu.NONE, R.string.menu_add_event)
+		.setIntent(new Intent(this, AddEventActivity.class))
 		.setIcon(R.drawable.ic_action_new)
 		.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		
