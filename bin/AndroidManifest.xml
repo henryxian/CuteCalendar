@@ -29,6 +29,11 @@
         </activity>
         
         <activity
+            android:name=".ShowEventActivity"
+            android:label="@string/title_activity_showEvent"
+            ></activity>
+        
+        <activity
             android:name=".AddEventActivity" 
             android:label="@string/title_activity_addEvent" >
         </activity>

@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">設置</string>
     <string name="title_activity_addEvent">新增事件</string>
+    <string name="title_activity_showEvent">事件列表</string>
     
     <string name="date_picker_title">日期</string>
     <string name="date_picker_summary">選擇起始日期</string>
