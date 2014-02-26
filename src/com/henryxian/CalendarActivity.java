@@ -46,13 +46,16 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			Bundle args = new Bundle();
 			Calendar cal = Calendar.getInstance();
 			
+			// initialize the caldroid with preference
 			int year = DatePickerPreference.getYear(date);
 			int month = DatePickerPreference.getMonth(date) - 1;
 			int day = DatePickerPreference.getDay(date);
 			
+			// set the displayed month and year on fresh
 			args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
 			args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));	
 			
+			// some other custom settings
 			args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
 			args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
 			args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, false);
