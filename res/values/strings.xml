@@ -20,4 +20,5 @@
     <string name="hello_world2">Hello world2!</string>
     
     <string name="menu_settings">設置</string>
+    <string name="menu_add_event">新增事件</string>
 </resources>

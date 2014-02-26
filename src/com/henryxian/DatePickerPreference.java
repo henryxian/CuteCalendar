@@ -11,13 +11,13 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 public class DatePickerPreference extends DialogPreference {
+	private final static String TAG = DatePickerPreference.class.getSimpleName();
+	
 	private DatePicker datePicker;
 	private Calendar cal;
 	private int year;
 	private int month;
 	private int day;
-	
-	private final static String TAG = "DatePickerPreference";
 	
 	public DatePickerPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);

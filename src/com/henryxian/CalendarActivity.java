@@ -3,28 +3,29 @@ package com.henryxian;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
-@SuppressLint("SimpleDateFormat")
 public class CalendarActivity extends SherlockFragmentActivity {
 	private static final String TAG = CalendarActivity.class.getSimpleName();
 	
 	private CaldroidFragment caldroidFragment;
+	ActionMode mActionMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +55,17 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			
 			args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
 			args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
-
-			cal.set(year, month, day);
+			args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, false);
+			
 			caldroidFragment.setArguments(args);
-			caldroidFragment.setMinDate(cal.getTime());
+			
+			cal.set(year, month, day);
+			Date minDate = cal.getTime();
+			caldroidFragment.setMinDate(minDate);
 			Log.d(TAG, "pref date: " + cal.getTime().toString());
 			cal.add(Calendar.DATE, 140);
-			caldroidFragment.setMaxDate(cal.getTime());
+			Date maxDate = cal.getTime();
+			caldroidFragment.setMaxDate(maxDate);
 		}
 
 		// Attach to the activity
@@ -75,6 +80,15 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			public void onSelectDate(Date date, View view) {
 				Toast.makeText(getApplicationContext(), "work",
 						Toast.LENGTH_SHORT).show();
+			}
+			
+			@Override
+			public void onLongClickDate(Date date, View view) {
+				// TODO Auto-generated method stub
+//				Toast.makeText(getApplicationContext(), "work", Toast.LENGTH_SHORT)
+//					.show();
+				registerForContextMenu(view);
+				mActionMode = startActionMode(new AnActionModeOfEpicProportions());
 			}
 
 		};
@@ -100,20 +114,78 @@ public class CalendarActivity extends SherlockFragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 //		return super.onCreateOptionsMenu(menu);
-		menu.add(R.string.menu_settings)
+		
+		// TODO set the item's intent
+		menu.add(Menu.NONE, 1, Menu.NONE, R.string.menu_add_event)
+		.setIcon(R.drawable.ic_action_new)
+		.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		
+		menu.add(Menu.NONE, 2, Menu.NONE, R.string.menu_settings)
+			.setIntent(new Intent(this, SettingsActivity.class))
 			.setIcon(R.drawable.ic_action_settings)
 			.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		
 		return true;
 	}
 	
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// TODO Auto-generated method stub
+//		//Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
+//		switch (item.getItemId()) {
+//		case 2:
+//			startActivity(new Intent(this, SettingsActivity.class));
+//		}
+//		return true;
+//	}
+
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
 		// TODO Auto-generated method stub
-		//Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
+		menu.add("test");
+	}
+	
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Got clicked!: " + item.toString(), Toast.LENGTH_SHORT).show();
 		
-		startActivity(new Intent(this, SettingsActivity.class));
 		return true;
 	}
 
+	// TODO try to use action mode 
+	private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			// TODO Auto-generated method stub
+			menu.add("edit")
+				.setIcon(R.drawable.ic_action_edit)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			
+			return true;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			// TODO Auto-generated method stub
+			Toast.makeText(CalendarActivity.this, "Got clicked:" + item, Toast.LENGTH_SHORT).show();
+			mode.finish();
+			
+			return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 }
