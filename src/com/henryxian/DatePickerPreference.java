@@ -58,7 +58,8 @@ public class DatePickerPreference extends DialogPreference {
 	protected void onBindDialogView(View view) {
 		super.onBindDialogView(view);
 		
-		datePicker.updateDate(year, month - 1, day);
+		//datePicker.updateDate(year, month, day);
+		datePicker.updateDate(year, month, day);
 	}
 	
 	@Override
@@ -77,6 +78,7 @@ public class DatePickerPreference extends DialogPreference {
 			if (defaultValue == null) {
 				// TODO
 				date = getPersistedString(getCurrentDate());
+//				date = getPersistedString("2014-5-15");
 			} else {
 				date = getPersistedString(defaultValue.toString());
 				Log.i(TAG, "onSetInitialValue:" + date);
@@ -100,7 +102,7 @@ public class DatePickerPreference extends DialogPreference {
 			month = datePicker.getMonth() + 1;
 			day = datePicker.getDayOfMonth();
 			
-			String date = year + "-" + month  + "-" + day;
+			String date = year + "-" + month + "-" + day;
 			Log.i(TAG, "before callchangelistener:" + date);
 			
 			if (callChangeListener(date)) {
@@ -114,6 +116,6 @@ public class DatePickerPreference extends DialogPreference {
 	protected String getCurrentDate() {
 		Calendar cl = Calendar.getInstance();
 		cl.setTimeInMillis(System.currentTimeMillis());
-		return cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + 1 + "-" + cl.get(Calendar.DAY_OF_MONTH);
+		return cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH)  + "-" + cl.get(Calendar.DAY_OF_MONTH);
 	}
 }
