@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class AddEventActivity extends SherlockActivity implements OnClickListener{
 	private static final String TAG = AddEventActivity.class.getSimpleName();
+	private static String date;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class AddEventActivity extends SherlockActivity implements OnClickListene
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
-		String date = bundle.getString("Date");
+		date = bundle.getString("Date");
 		TextView textView = (TextView)findViewById(R.id.text_date);
 		textView.setText(date);
 	}
