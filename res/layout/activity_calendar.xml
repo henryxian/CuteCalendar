@@ -22,14 +22,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="customize" />
+            android:text="@string/button_show_events" />
 
         <Button
             android:id="@+id/show_dialog_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="showdialog" />
+            android:text="@string/button_show_recent" />
     </LinearLayout>
 
     <TextView

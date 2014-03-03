@@ -45,8 +45,11 @@
         
         <activity
             android:name=".ShowRecentEventActivity"
-            android:label="showrecentactivity"
-            >
+            android:label="@string/title_activity_showEvent"
+            android:parentActivityName=".CalendarActivity" >
+            <meta-data 
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CalendarActivity" />
         </activity>
         
         <provider 

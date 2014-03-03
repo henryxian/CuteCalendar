@@ -31,4 +31,6 @@
     <string name="text_content">事件詳情</string>
     <string name="text_add_positive">確定</string>
     
+    <string name="button_show_events">事件列表</string>
+    <string name="button_show_recent">最近事件</string>
 </resources>

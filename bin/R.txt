@@ -301,10 +301,10 @@ int id abs__submit_area 0x7f08002f
 int id abs__textButton 0x7f080013
 int id abs__title 0x7f08001b
 int id abs__up 0x7f08000b
-int id action_settings 0x7f080046
+int id action_settings 0x7f080049
 int id button_add_positive 0x7f08003a
 int id button_layout 0x7f080033
-int id button_to_settings 0x7f080045
+int id button_to_settings 0x7f080048
 int id calendar_gridview 0x7f080042
 int id calendar_left_arrow 0x7f08003c
 int id calendar_month_year_textview 0x7f08003d
@@ -327,8 +327,11 @@ int id showTitle 0x7f080007
 int id show_dialog_button 0x7f080035
 int id tabMode 0x7f080003
 int id text_date 0x7f080039
-int id text_display 0x7f080043
-int id text_display2 0x7f080044
+int id text_display 0x7f080046
+int id text_display2 0x7f080047
+int id text_show_content 0x7f080045
+int id text_show_date 0x7f080044
+int id text_show_title 0x7f080043
 int id textview 0x7f080036
 int id useLogo 0x7f080004
 int id weekday_gridview 0x7f08003f
@@ -381,6 +384,8 @@ int string abs__shareactionprovider_share_with 0x7f060007
 int string abs__shareactionprovider_share_with_application 0x7f060008
 int string action_settings 0x7f06000e
 int string app_name 0x7f060000
+int string button_show_events 0x7f060023
+int string button_show_recent 0x7f060024
 int string date_picker_dialog_message 0x7f060015
 int string date_picker_dialog_title 0x7f060014
 int string date_picker_summary 0x7f060013
