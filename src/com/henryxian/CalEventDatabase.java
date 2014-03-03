@@ -2,6 +2,7 @@ package com.henryxian;
 
 import com.henryxian.EventContract.EventEntry;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,9 @@ public class CalEventDatabase {
 		mEventOpenHelper = new EventOpenHelper(context);
 	}
 	
+	/*
+	 * Get an event from database by id.
+	 */
 	public Cursor getEvent(Uri uri) {
 		String rowId = uri.getLastPathSegment();
 		String[] columns = new String[]{
@@ -51,8 +55,12 @@ public class CalEventDatabase {
 		}
 	}
 	
+	/*
+	 * Get all events from the database.
+	 */
 	public Cursor getAllEvents() {
 		String[] columns = new String[]{
+				EventEntry._ID,
 				EventEntry.COLUMN_NAME_TITLE,
 				EventEntry.COLUMN_NAME_CONTENT,
 				EventEntry.COLUMN_NAME_DATE
@@ -76,6 +84,16 @@ public class CalEventDatabase {
 		} else {
 			return cursor;
 		}
+	}
+	
+	/*
+	 * put an event into database, return -1 if failure happens.
+	 */
+	public long putEvent(ContentValues values) {
+		SQLiteDatabase db = mEventOpenHelper.getWritableDatabase();
+		long rowId = 
+				db.insert(EventEntry.TABLE_NAME, EventEntry.COLUMN_NAME_CONTENT, values);
+		return rowId;
 	}
 	
 	

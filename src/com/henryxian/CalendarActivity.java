@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -33,6 +35,15 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		setContentView(R.layout.activity_calendar);
 
 		caldroidFragment = new CaldroidFragment();
+		Button button = (Button)findViewById(R.id.customize_button);
+		button.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(CalendarActivity.this, ShowRecentEventActivity.class));
+			}
+		});
 		
 		if (savedInstanceState != null) {
 			caldroidFragment.restoreStatesFromKey(savedInstanceState,
