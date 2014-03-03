@@ -30,8 +30,8 @@
         
         <activity
             android:name=".ShowEventActivity"
-            android:label="@string/title_activity_showEvent"
-            ></activity>
+            android:label="@string/title_activity_showEvent" >
+        </activity>
         
         <activity
             android:name=".AddEventActivity" 

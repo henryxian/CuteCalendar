@@ -3,8 +3,10 @@ package com.henryxian;
 import com.henryxian.EventContract.EventEntry;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
 public class CalEventDatabase {
@@ -18,6 +20,64 @@ public class CalEventDatabase {
 	public CalEventDatabase(Context context) {
 		mEventOpenHelper = new EventOpenHelper(context);
 	}
+	
+	public Cursor getEvent(Uri uri) {
+		String rowId = uri.getLastPathSegment();
+		String[] columns = new String[]{
+				EventEntry.COLUMN_NAME_TITLE,
+				EventEntry.COLUMN_NAME_CONTENT,
+				EventEntry.COLUMN_NAME_DATE
+		};
+		String orderBy = EventEntry.COLUMN_NAME_DATE + " DESC";
+		String selection = EventEntry._ID + " = ?";
+		String[] selectionArgs = new String[]{rowId};
+		SQLiteDatabase db = mEventOpenHelper.getReadableDatabase();
+		Cursor cursor = db.query(
+				EventEntry.TABLE_NAME, 
+				columns, 
+				selection, 
+				selectionArgs, 
+				null,
+				null, 
+				orderBy
+				);
+		if (cursor == null) {
+			return null;
+		} else if (!cursor.moveToFirst()) {
+			cursor.close();
+			return null;
+		} else {
+			return cursor;
+		}
+	}
+	
+	public Cursor getAllEvents() {
+		String[] columns = new String[]{
+				EventEntry.COLUMN_NAME_TITLE,
+				EventEntry.COLUMN_NAME_CONTENT,
+				EventEntry.COLUMN_NAME_DATE
+		};
+		String orderBy = EventEntry.COLUMN_NAME_DATE + " DESC";
+		SQLiteDatabase db = mEventOpenHelper.getReadableDatabase();
+		Cursor cursor = db.query(
+				EventEntry.TABLE_NAME, 
+				columns, 
+				null, 
+				null, 
+				null, 
+				null, 
+				orderBy
+				);
+		if (cursor == null) {
+			return null;
+		} else if (!cursor.moveToFirst()) {
+			cursor.close();
+			return null;
+		} else {
+			return cursor;
+		}
+	}
+	
 	
 	private static class EventOpenHelper extends SQLiteOpenHelper {
 		private final Context mHelperContext;
@@ -54,5 +114,6 @@ public class CalEventDatabase {
 			mDatabase.execSQL(EVENTS_TABLE_DROP);
 			onCreate(db);
 		}
+		
 	}
 }

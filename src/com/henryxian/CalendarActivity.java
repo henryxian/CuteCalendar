@@ -92,6 +92,33 @@ public class CalendarActivity extends SherlockFragmentActivity {
 //					.show();
 				registerForContextMenu(view);
 				mActionMode = startActionMode(new AnActionModeOfEpicProportions());
+				Intent intent = new Intent(CalendarActivity.this, AddEventActivity.class);
+				
+//				int year = date.getYear();
+//				int month = date.getMonth() + 1;
+//				int day = date.getDate();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH) + 1;
+				
+				String month2;
+				if (month < 10) {
+					 month2 = "0" + month;
+				} else {
+					 month2 = String.valueOf(month);
+				}
+				
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				String day2;
+				if (day < 10) {
+					day2 = "0" + day;
+				} else {
+					day2 = String.valueOf(day);
+				}
+				
+				intent.putExtra("Date", year + "-" + month2 + "-" + day2);
+				startActivity(intent);
 			}
 
 		};
@@ -119,6 +146,8 @@ public class CalendarActivity extends SherlockFragmentActivity {
 //		return super.onCreateOptionsMenu(menu);
 		
 		// TODO set the item's intent
+		Calendar cal = Calendar.getInstance();
+		
 		menu.add(Menu.NONE, 1, Menu.NONE, R.string.menu_add_event)
 		.setIntent(new Intent(this, AddEventActivity.class))
 		.setIcon(R.drawable.ic_action_new)

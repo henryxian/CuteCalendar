@@ -23,6 +23,7 @@
         android:negativeButtonText="cancel"
         android:title="@string/date_picker_title"
         android:summary="@string/date_picker_summary"
+        android:defaultValue="2014-5-1"
         />
 	</PreferenceCategory>
 </PreferenceScreen>

@@ -51,4 +51,11 @@
         android:layout_width="match_parent"
         android:text="日期：2014"
         />
+	<Button
+	    android:id="@+id/button_add_positive"
+	    android:text="@string/text_add_positive"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    >
+	</Button>	
 </LinearLayout>

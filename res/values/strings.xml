@@ -23,4 +23,12 @@
     
     <string name="menu_settings">設置</string>
     <string name="menu_add_event">新增事件</string>
+    
+    <string name="hint_title">標題</string>
+    <string name="hint_content">內容</string>
+    
+    <string name="text_title">事情標題</string>
+    <string name="text_content">事件詳情</string>
+    <string name="text_add_positive">確定</string>
+    
 </resources>
