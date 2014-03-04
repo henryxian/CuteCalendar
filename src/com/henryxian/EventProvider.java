@@ -94,7 +94,7 @@ public class EventProvider extends ContentProvider{
 		switch(sURIMatcher.match(uri))
 		{
 		case SPECIFIED_EVENT:
-				id = Long.parseLong(uri.getLastPathSegment());
+				id = ContentUris.parseId(uri);
 				return mCalEventDatabase.updateEvent(values, id);
 		}
 		throw new SQLException("Update Exception");
