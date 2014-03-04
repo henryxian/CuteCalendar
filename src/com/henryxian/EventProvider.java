@@ -90,7 +90,14 @@ public class EventProvider extends ContentProvider{
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 		// TODO Auto-generated method stub
-		return 0;
+		long id;
+		switch(sURIMatcher.match(uri))
+		{
+		case SPECIFIED_EVENT:
+				id = Long.parseLong(uri.getLastPathSegment());
+				return mCalEventDatabase.updateEvent(values, id);
+		}
+		throw new SQLException("Update Exception");
 	}
 	
 }
