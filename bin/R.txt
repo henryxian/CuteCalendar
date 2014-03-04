@@ -383,6 +383,9 @@ int string abs__searchview_description_voice 0x7f06000d
 int string abs__shareactionprovider_share_with 0x7f060007
 int string abs__shareactionprovider_share_with_application 0x7f060008
 int string action_settings 0x7f06000e
+int string alertdialog_dismiss 0x7f060027
+int string alertdialog_message 0x7f060026
+int string alertdialog_title 0x7f060025
 int string app_name 0x7f060000
 int string button_show_events 0x7f060023
 int string button_show_recent 0x7f060024
@@ -406,6 +409,7 @@ int string time_picker_title 0x7f060016
 int string title_activity_addEvent 0x7f060010
 int string title_activity_settings 0x7f06000f
 int string title_activity_showEvent 0x7f060011
+int string toast_ok 0x7f060028
 int style AppBaseTheme 0x7f070000
 int style AppTheme 0x7f070001
 int style Sherlock___TextAppearance_Small 0x7f070048

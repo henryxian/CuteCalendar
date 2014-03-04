@@ -150,9 +150,10 @@ public class AddEventActivity extends SherlockActivity implements OnClickListene
 			
 			if (mEditTextTitle.getText().length() == 0) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(AddEventActivity.this);
-				builder.setTitle("¾¯¸æ")
-					.setMessage("˜Ëî}²»ÄÜ ‘¿Õ")
-					.setPositiveButton("êPé]", new DialogInterface.OnClickListener() {
+				builder.setTitle(R.string.alertdialog_title)
+					.setMessage(R.string.alertdialog_dismiss)
+					.setPositiveButton(R.string.alertdialog_dismiss, 
+							new DialogInterface.OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -166,7 +167,7 @@ public class AddEventActivity extends SherlockActivity implements OnClickListene
 				cv.put(EventEntry.COLUMN_NAME_DATE, date);
 				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
 				myAsyncQueryHandler.startInsert(0, null, EventProvider.CONTENT_URI, cv);
-				Toast.makeText(AddEventActivity.this, "ok", Toast.LENGTH_SHORT).show();
+				Toast.makeText(AddEventActivity.this, R.string.toast_ok, Toast.LENGTH_SHORT).show();
 		}
 		}
 	}

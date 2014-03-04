@@ -33,4 +33,9 @@
     
     <string name="button_show_events">事件列表</string>
     <string name="button_show_recent">最近事件</string>
+    
+    <string name="alertdialog_title">警告</string>
+    <string name="alertdialog_message">標題不能爲空</string>
+    <string name="alertdialog_dismiss">關閉</string>
+    <string name="toast_ok">ok</string>
 </resources>
