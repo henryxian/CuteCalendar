@@ -59,6 +59,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			String date = sp.getString("DatePreference", "2013-2-23");
 			Bundle args = new Bundle();
 			Calendar cal = Calendar.getInstance();
+			cal.setFirstDayOfWeek(Calendar.MONDAY);
 			
 			// initialize the caldroid with preference
 			int year = DatePickerPreference.getYear(date);
@@ -81,8 +82,14 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			cal.set(year, month, day);
 			
 			// week starts from Monday
-			cal.setFirstDayOfWeek(Calendar.MONDAY);
-			
+			Log.d(TAG, "day of week:" + 
+					String.valueOf(cal.get(Calendar.DAY_OF_WEEK)));
+			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+			// calculate the day of week
+			dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+			// shift the day to the first day of the week.
+			cal.add(Calendar.DATE, - (dayOfWeek - 1));
+		
 			Date minDate = cal.getTime();
 			caldroidFragment.setMinDate(minDate);
 			Log.d(TAG, "pref date: " + cal.getTime().toString());
@@ -115,9 +122,10 @@ public class CalendarActivity extends SherlockFragmentActivity {
 				mActionMode = startActionMode(new AnActionModeOfEpicProportions());
 				Intent intent = new Intent(CalendarActivity.this, AddEventActivity.class);
 				
-//				int year = date.getYear();
-//				int month = date.getMonth() + 1;
-//				int day = date.getDate();
+				/*
+				 * change the date formt 'xxxx-x-x' to
+				 * 'xxxx-xx-xx'.
+				 */
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
 				int year = cal.get(Calendar.YEAR);
