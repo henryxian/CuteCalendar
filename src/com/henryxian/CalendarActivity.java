@@ -27,8 +27,11 @@ public class CalendarActivity extends SherlockFragmentActivity {
 	private static final String TAG = CalendarActivity.class.getSimpleName();
 	
 	private CaldroidFragment caldroidFragment;
-	ActionMode mActionMode;
-
+	private ActionMode mActionMode;
+	
+	/*
+	 * initialize the whole calendar fragment
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,7 +76,13 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			
 			caldroidFragment.setArguments(args);
 			
+			// set the start date of week retrieved from
+			// the shared preference
 			cal.set(year, month, day);
+			
+			// week starts from Monday
+			cal.setFirstDayOfWeek(Calendar.MONDAY);
+			
 			Date minDate = cal.getTime();
 			caldroidFragment.setMinDate(minDate);
 			Log.d(TAG, "pref date: " + cal.getTime().toString());
@@ -89,18 +98,19 @@ public class CalendarActivity extends SherlockFragmentActivity {
 
 		// Setup listener
 		final CaldroidListener listener = new CaldroidListener() {
-
+			//TODO add some logic here
 			@Override
 			public void onSelectDate(Date date, View view) {
 				Toast.makeText(getApplicationContext(), "work",
 						Toast.LENGTH_SHORT).show();
 			}
 			
+			/*
+			 * when long click the date cell, send the selected date
+			 * to the add-event activity and redirect.
+			 */
 			@Override
 			public void onLongClickDate(Date date, View view) {
-				// TODO Auto-generated method stub
-//				Toast.makeText(getApplicationContext(), "work", Toast.LENGTH_SHORT)
-//					.show();
 				registerForContextMenu(view);
 				mActionMode = startActionMode(new AnActionModeOfEpicProportions());
 				Intent intent = new Intent(CalendarActivity.this, AddEventActivity.class);
@@ -159,11 +169,13 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		// TODO set the item's intent
 		Calendar cal = Calendar.getInstance();
 		
+		/*
+		 * setting some menu items here
+		 */
 		menu.add(Menu.NONE, 1, Menu.NONE, R.string.menu_add_event)
 		.setIntent(new Intent(this, AddEventActivity.class))
 		.setIcon(R.drawable.ic_action_new)
 		.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-		
 		menu.add(Menu.NONE, 2, Menu.NONE, R.string.menu_settings)
 			.setIntent(new Intent(this, SettingsActivity.class))
 			.setIcon(R.drawable.ic_action_settings)
