@@ -2,15 +2,19 @@ package com.henryxian;
 
 import java.util.Calendar;
 
+import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -103,7 +107,15 @@ public class AddEventActivity extends SherlockActivity implements OnClickListene
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
-		NavUtils.navigateUpTo(this, new Intent(this, CalendarActivity.class));
+		switch(item.getItemId()) {
+		case android.R.id.home:
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(
+					this.getCurrentFocus().getWindowToken(), 
+					InputMethodManager.HIDE_NOT_ALWAYS);
+			
+			NavUtils.navigateUpTo(this, new Intent(this, CalendarActivity.class));
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -136,14 +148,26 @@ public class AddEventActivity extends SherlockActivity implements OnClickListene
 			mEditTextTitle = (EditText)findViewById(R.id.edit_event_title);
 			mEditTextContent = (EditText)findViewById(R.id.edit_event_content);
 			
-			cv.put(EventEntry.COLUMN_NAME_TITLE, mEditTextTitle.getText().toString());
-			cv.put(EventEntry.COLUMN_NAME_CONTENT, mEditTextContent.getText().toString());
-			cv.put(EventEntry.COLUMN_NAME_DATE, date);
-			
-			myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
-			myAsyncQueryHandler.startInsert(0, null, EventProvider.CONTENT_URI, cv);
-			Toast.makeText(AddEventActivity.this, "ok", Toast.LENGTH_SHORT).show();
+			if (mEditTextTitle.getText().length() == 0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(AddEventActivity.this);
+				builder.setTitle("¾¯¸æ")
+					.setMessage("˜Ëî}²»ÄÜ ‘¿Õ")
+					.setPositiveButton("êPé]", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							dialog.dismiss();
+						}
+					}).show();
+			} else {
+				cv.put(EventEntry.COLUMN_NAME_TITLE, mEditTextTitle.getText().toString());
+				cv.put(EventEntry.COLUMN_NAME_CONTENT, mEditTextContent.getText().toString());
+				cv.put(EventEntry.COLUMN_NAME_DATE, date);
+				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
+				myAsyncQueryHandler.startInsert(0, null, EventProvider.CONTENT_URI, cv);
+				Toast.makeText(AddEventActivity.this, "ok", Toast.LENGTH_SHORT).show();
 		}
-		
+		}
 	}
 }
