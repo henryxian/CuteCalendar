@@ -42,7 +42,10 @@ public class EventProvider extends ContentProvider{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
-
+	
+	/*
+	 * Provide simple insert operation.
+	 */
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		// TODO Auto-generated method stub
@@ -58,13 +61,16 @@ public class EventProvider extends ContentProvider{
 		throw new SQLException("Failed to insert row" + uri);
 	}
 
+	/*
+	 * obtain an db instance.
+	 */
 	@Override
 	public boolean onCreate() {
 		// TODO Auto-generated method stub
 		mCalEventDatabase = new CalEventDatabase(getContext());
 		return true;
 	}
-
+	
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
