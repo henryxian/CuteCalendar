@@ -67,7 +67,9 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				ListView listView = (ListView)parent;
 				Cursor cursor = (Cursor)listView.getItemAtPosition(position);
 				String content = String.valueOf(cursor.getString(cursor.getColumnIndex(EventEntry.COLUMN_NAME_CONTENT)));
-				Toast.makeText(ShowRecentEventActivity.this, content, Toast.LENGTH_SHORT).show();
+				if (!"".equals(content)) {
+					Toast.makeText(ShowRecentEventActivity.this, content, Toast.LENGTH_SHORT).show();
+				}
 			}
 			
 		});
