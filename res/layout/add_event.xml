@@ -50,13 +50,27 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center"
         android:text="日期：2014"
         />
+	
+	<TextView
+	    android:id="@+id/text_time"
+	    android:layout_height="wrap_content"
+	    android:layout_width="match_parent"
+	    android:textAppearance="?android:attr/textAppearanceLarge"
+	    android:text="時間" 
+	    android:clickable="true"
+	    android:onClick="showTimePickerDialog"
+	    android:gravity="center"
+	    />
+	
 	<Button
 	    android:id="@+id/button_add_positive"
 	    android:text="@string/text_add_positive"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    >
-	</Button>	
+	</Button>
 </LinearLayout>

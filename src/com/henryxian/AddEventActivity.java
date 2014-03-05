@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,11 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.henryxian.EventContract.EventEntry;
 
-public class AddEventActivity extends SherlockActivity implements OnClickListener{
+public class AddEventActivity extends SherlockFragmentActivity implements OnClickListener{
 	private static final String TAG = AddEventActivity.class.getSimpleName();
 	private static String date;
 	private MyAsyncQueryHandler myAsyncQueryHandler;
@@ -139,6 +142,12 @@ public class AddEventActivity extends SherlockActivity implements OnClickListene
 		}
 	}
 	
+	public void showTimePickerDialog(View v) {
+//		Toast.makeText(this, "onclicktime", 1).show();
+		TimePickerFragment fragment = new TimePickerFragment();
+		fragment.show(getSupportFragmentManager(), "timepicker");
+	}
+	
 	private final class okButtonListener implements OnClickListener {
 
 		@Override
@@ -151,7 +160,7 @@ public class AddEventActivity extends SherlockActivity implements OnClickListene
 			if (mEditTextTitle.getText().length() == 0) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(AddEventActivity.this);
 				builder.setTitle(R.string.alertdialog_title)
-					.setMessage(R.string.alertdialog_dismiss)
+					.setMessage(R.string.alertdialog_message)
 					.setPositiveButton(R.string.alertdialog_dismiss, 
 							new DialogInterface.OnClickListener() {
 						
