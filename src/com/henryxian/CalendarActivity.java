@@ -62,6 +62,10 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			// TODO Auto-generated constructor stub
 		}
 		
+		/*
+		 * Async fetch the date and event count of the date from 
+		 * the database
+		 */
 		@Override
 		protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
 			// TODO Auto-generated method stub
@@ -161,6 +165,9 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			Date minDate = cal.getTime();
 			caldroidFragment.setMinDate(minDate);
 			Log.d(TAG, "pref date: " + cal.getTime().toString());
+			
+			// set the availabe span of the calendar 
+			// 20 weeks X 7 days = 140 days
 			cal.add(Calendar.DATE, 140);
 			Date maxDate = cal.getTime();
 			caldroidFragment.setMaxDate(maxDate);

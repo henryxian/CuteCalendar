@@ -66,8 +66,8 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				// TODO Auto-generated method stub
 				ListView listView = (ListView)parent;
 				Cursor cursor = (Cursor)listView.getItemAtPosition(position);
-				String title = String.valueOf(cursor.getString(cursor.getColumnIndex(EventEntry.COLUMN_NAME_TITLE)));
-				Toast.makeText(ShowRecentEventActivity.this, title, Toast.LENGTH_SHORT).show();
+				String content = String.valueOf(cursor.getString(cursor.getColumnIndex(EventEntry.COLUMN_NAME_CONTENT)));
+				Toast.makeText(ShowRecentEventActivity.this, content, Toast.LENGTH_SHORT).show();
 			}
 			
 		});
