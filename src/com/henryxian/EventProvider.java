@@ -80,6 +80,9 @@ public class EventProvider extends ContentProvider{
 		return true;
 	}
 	
+	/*
+	 * Provide simple query operation.
+	 */
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
@@ -97,6 +100,9 @@ public class EventProvider extends ContentProvider{
 		throw new SQLException("Query Exception");
 	}
 
+	/*
+	 * Provide simple event update operation
+	 */
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
