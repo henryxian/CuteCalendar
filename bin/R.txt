@@ -108,10 +108,11 @@ int color abs__bright_foreground_disabled_holo_dark 0x7f05000d
 int color abs__bright_foreground_disabled_holo_light 0x7f05000e
 int color abs__bright_foreground_holo_dark 0x7f05000b
 int color abs__bright_foreground_holo_light 0x7f05000c
-int color abs__primary_text_disable_only_holo_dark 0x7f05000f
-int color abs__primary_text_disable_only_holo_light 0x7f050010
-int color abs__primary_text_holo_dark 0x7f050011
-int color abs__primary_text_holo_light 0x7f050012
+int color abs__primary_text_disable_only_holo_dark 0x7f050013
+int color abs__primary_text_disable_only_holo_light 0x7f050014
+int color abs__primary_text_holo_dark 0x7f050015
+int color abs__primary_text_holo_light 0x7f050016
+int color busy 0x7f05000f
 int color caldroid_black 0x7f050001
 int color caldroid_darker_gray 0x7f050005
 int color caldroid_gray 0x7f050004
@@ -121,6 +122,9 @@ int color caldroid_lighter_gray 0x7f050003
 int color caldroid_sky_blue 0x7f050008
 int color caldroid_transparent 0x7f050002
 int color caldroid_white 0x7f050000
+int color free 0x7f050012
+int color medium_busy 0x7f050010
+int color not_very_busy 0x7f050011
 int dimen abs__action_bar_default_height 0x7f0a0001
 int dimen abs__action_bar_icon_vertical_padding 0x7f0a0002
 int dimen abs__action_bar_subtitle_bottom_margin 0x7f0a0006

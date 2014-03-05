@@ -1,10 +1,16 @@
 package com.henryxian;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +26,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.henryxian.EventContract.EventEntry;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
@@ -29,15 +36,75 @@ public class CalendarActivity extends SherlockFragmentActivity {
 	private CaldroidFragment caldroidFragment;
 	private ActionMode mActionMode;
 	
+	//TODO
+	private void setDateColor(Date date, int count) {
+		if (count == 1) {
+			caldroidFragment.setBackgroundResourceForDate(R.color.free, date);
+		}
+		
+		if (count == 2) {
+			caldroidFragment.setBackgroundResourceForDate(R.color.not_very_busy, date);
+		}
+		
+		if (count == 3) {
+			caldroidFragment.setBackgroundResourceForDate(R.color.medium_busy, date);
+		}
+		
+		if (count > 3) {
+			caldroidFragment.setBackgroundResourceForDate(R.color.busy, date);
+		}
+	}
+	
+	private class MyAsyncQueryHandler extends AsyncQueryHandler {
+
+		public MyAsyncQueryHandler(ContentResolver cr) {
+			super(cr);
+			// TODO Auto-generated constructor stub
+		}
+		
+		@Override
+		protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			// TODO Auto-generated method stub
+			super.onQueryComplete(token, cookie, cursor);
+			
+//			Log.i(TAG, "Cursor_date: " + cursor.getString(0));
+//			Log.i(TAG, "Cursor_count: " + cursor.getInt(1));
+			if (cursor != null) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				while(cursor.moveToNext()) {
+					String date = cursor.getString(0);
+					int count = cursor.getInt(1);
+					Log.i(TAG, "Cursor_date: " + date);
+					Log.i(TAG, "Cursor_count: " + count);
+					Date dateTransformed = new Date();
+					try {
+						dateTransformed = format.parse(date);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+//					caldroidFragment.setBackgroundResourceForDate(R.color.caldroid_sky_blue, date);
+					setDateColor(dateTransformed, count);
+				}
+				cursor.close();
+			}
+		}
+	}
+	
 	/*
 	 * initialize the whole calendar fragment
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		caldroidFragment = new CaldroidFragment();
+		
+		Uri uri = Uri.parse("content://" + EventProvider.AUTHORITY + "/events/counts");		
+		MyAsyncQueryHandler handler = new MyAsyncQueryHandler(this.getContentResolver());
+		handler.startQuery(0, null, uri, null, null, null, null);
+		
 		setContentView(R.layout.activity_calendar);
 
-		caldroidFragment = new CaldroidFragment();
 		Button button = (Button)findViewById(R.id.customize_button);
 		button.setOnClickListener(new OnClickListener() {
 			
@@ -48,6 +115,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			}
 		});
 		
+		// restore the fragment
 		if (savedInstanceState != null) {
 			caldroidFragment.restoreStatesFromKey(savedInstanceState,
 					"CALDROID_SAVED_STATE");

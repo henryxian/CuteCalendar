@@ -23,11 +23,13 @@ public class EventProvider extends ContentProvider{
 	private static final UriMatcher sURIMatcher = buildUriMatcher();
 	private static final int EVENTS = 1;
 	private static final int SPECIFIED_EVENT = 2;
+	private static final int DATE_EVENT_COUNT = 3;
 	
 	private static UriMatcher buildUriMatcher() {
 		UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTHORITY, "events", EVENTS);
 		uriMatcher.addURI(AUTHORITY, "events/#", SPECIFIED_EVENT);
+		uriMatcher.addURI(AUTHORITY, "events/counts", DATE_EVENT_COUNT);
 		return uriMatcher;
 	}
 	
@@ -82,6 +84,8 @@ public class EventProvider extends ContentProvider{
 				return mCalEventDatabase.getAllEvents();
 			case SPECIFIED_EVENT:
 				return mCalEventDatabase.getEvent(uri);
+			case DATE_EVENT_COUNT:
+				return mCalEventDatabase.getDateEventCount();
 		}
 		throw new SQLException("Query Exception");
 	}

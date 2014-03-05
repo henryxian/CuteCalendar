@@ -79,16 +79,18 @@ public class CalEventDatabase {
 				);
 		if (cursor == null) {
 			return null;
-		} else if (!cursor.moveToFirst()) {
-			cursor.close();
-			return null;
-		} else {
+		} 
+//		else if (!cursor.moveToFirst()) {
+//			cursor.close();
+//			return null;
+//		} 
+		else {
 			return cursor;
 		}
 	}
 	
 	//TODO 
-	public Cursor getDateEventCount(ContentValues values) {
+	public Cursor getDateEventCount() {
 		SQLiteDatabase db = mEventOpenHelper.getReadableDatabase();
 		
 		String sql = "SELECT " + EventEntry.COLUMN_NAME_DATE + " , COUNT() " + 
@@ -99,10 +101,12 @@ public class CalEventDatabase {
 		Cursor cursor = db.rawQuery(sql, null);
 		if (cursor == null) {
 			return null;
-		} else if (!cursor.moveToFirst()) {
-			cursor.close();
-			return null;
-		} else {
+		} 
+//		else if (!cursor.moveToFirst()) {
+//			cursor.close();
+//			return null;
+//		} 
+		else {
 			return cursor;
 		}
 	}
