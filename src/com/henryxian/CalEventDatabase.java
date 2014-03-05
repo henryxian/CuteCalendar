@@ -87,6 +87,26 @@ public class CalEventDatabase {
 		}
 	}
 	
+	//TODO 
+	public Cursor getDateEventCount(ContentValues values) {
+		SQLiteDatabase db = mEventOpenHelper.getReadableDatabase();
+		
+		String sql = "SELECT " + EventEntry.COLUMN_NAME_DATE + " , COUNT() " + 
+				" FROM " + EventEntry.TABLE_NAME + " WHERE " + EventEntry.COLUMN_NAME_DATE +
+				" IN " + "( SELECT DISTINCT " + EventEntry.COLUMN_NAME_DATE + " FROM " + 
+				EventEntry.TABLE_NAME + ")" + " GROUP BY " + EventEntry.COLUMN_NAME_DATE;		
+//		String[] selectionArgs = {};
+		Cursor cursor = db.rawQuery(sql, null);
+		if (cursor == null) {
+			return null;
+		} else if (!cursor.moveToFirst()) {
+			cursor.close();
+			return null;
+		} else {
+			return cursor;
+		}
+	}
+	
 	/*
 	 * put an event into database, return -1 if failure happens.
 	 */
