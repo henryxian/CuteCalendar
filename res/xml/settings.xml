@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory 
-        android:title="test" >
+        android:title="@string/pref_category_basic" >
     <com.henryxian.TimePickerPreference 
         android:key="TimePreference"
         android:dialogMessage="message"
@@ -19,8 +19,8 @@
         android:key="DatePreference"
         android:dialogMessage="@string/date_picker_dialog_message"
         android:dialogTitle="@string/date_picker_dialog_title"
-        android:positiveButtonText="ok"
-        android:negativeButtonText="cancel"
+        android:positiveButtonText="@string/date_picker_positiveButtonText"
+        android:negativeButtonText="@string/date_picker_negativeButtonText"
         android:title="@string/date_picker_title"
         android:summary="@string/date_picker_summary"
         android:defaultValue="2014-5-1"

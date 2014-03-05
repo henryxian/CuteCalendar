@@ -24,19 +24,26 @@ public class EventProvider extends ContentProvider{
 	private static final int EVENTS = 1;
 	private static final int SPECIFIED_EVENT = 2;
 	private static final int DATE_EVENT_COUNT = 3;
+	private static final int DROP_EVENTS = 4;
 	
 	private static UriMatcher buildUriMatcher() {
 		UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTHORITY, "events", EVENTS);
 		uriMatcher.addURI(AUTHORITY, "events/#", SPECIFIED_EVENT);
 		uriMatcher.addURI(AUTHORITY, "events/counts", DATE_EVENT_COUNT);
+		uriMatcher.addURI(AUTHORITY, "events/drop", DROP_EVENTS);
 		return uriMatcher;
 	}
 	
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+//		throw new UnsupportedOperationException();
+		switch(sURIMatcher.match(uri)) {
+		case DROP_EVENTS:
+			return mCalEventDatabase.dropTable();
+		}
+		throw new SQLException("Delete failure!");
 	}
 
 	@Override

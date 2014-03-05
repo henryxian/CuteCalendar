@@ -7,10 +7,15 @@
     <string name="title_activity_addEvent">新增事件</string>
     <string name="title_activity_showEvent">事件列表</string>
     
+    <string name="pref_category_basic">基本設置</string>
+    
     <string name="date_picker_title">日期</string>
-    <string name="date_picker_summary">選擇起始日期</string>
+    <string name="date_picker_summary">選擇起始日期。注意：重置日期將會清空數據。
+        日期爲起始周的任一天。</string>
     <string name="date_picker_dialog_title">日期</string>
     <string name="date_picker_dialog_message">日期</string>
+    <string name="date_picker_positiveButtonText">確定</string>
+    <string name="date_picker_negativeButtonText">取消</string>
     
     <string name="time_picker_title">時間</string>
     <string name="time_picker_summary">請選擇起始時間</string>

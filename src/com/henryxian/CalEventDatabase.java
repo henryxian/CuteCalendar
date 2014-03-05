@@ -138,6 +138,16 @@ public class CalEventDatabase {
 	}
 	
 	/*
+	 * delete all the items in events.
+	 */
+	public int dropTable() {
+		SQLiteDatabase db = mEventOpenHelper.getWritableDatabase();
+		return db.delete(EventEntry.TABLE_NAME, 
+				null, 
+				null);
+	}
+	
+	/*
 	 * Sqldatabase open helper class
 	 */
 	private static class EventOpenHelper extends SQLiteOpenHelper {

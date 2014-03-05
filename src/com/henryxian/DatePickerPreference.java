@@ -1,8 +1,13 @@
 package com.henryxian;
 import java.util.Calendar;
 
+import com.henryxian.EventContract.EventEntry;
+
+import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -107,6 +112,10 @@ public class DatePickerPreference extends DialogPreference {
 			
 			if (callChangeListener(date)) {
 				persistString(date);
+				MyAsyncQueryHandler handler = 
+						new MyAsyncQueryHandler(getContext().getContentResolver());
+				Uri uri = Uri.parse("content://" + EventProvider.AUTHORITY + "/events/drop");
+				handler.startDelete(0, null, uri, null, null);
 			}
 			Toast.makeText(getContext(), date, Toast.LENGTH_SHORT).show();
 			Log.i(TAG, "close dialog: " + date);
@@ -117,5 +126,20 @@ public class DatePickerPreference extends DialogPreference {
 		Calendar cl = Calendar.getInstance();
 		cl.setTimeInMillis(System.currentTimeMillis());
 		return cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1)   + "-" + cl.get(Calendar.DAY_OF_MONTH);
+	}
+	
+	private class MyAsyncQueryHandler extends AsyncQueryHandler {
+
+		public MyAsyncQueryHandler(ContentResolver cr) {
+			super(cr);
+			// TODO Auto-generated constructor stub
+		}
+		
+		@Override
+		protected void onDeleteComplete(int token, Object cookie, int result) {
+			// TODO Auto-generated method stub
+			super.onDeleteComplete(token, cookie, result);
+			
+		}
 	}
 }
