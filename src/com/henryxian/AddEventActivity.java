@@ -115,7 +115,8 @@ public class AddEventActivity extends SherlockFragmentActivity implements OnClic
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(
 					this.getCurrentFocus().getWindowToken(), 
-					InputMethodManager.HIDE_NOT_ALWAYS);
+					// TODO maybe a bug here. 
+					InputMethodManager.RESULT_UNCHANGED_SHOWN);
 			
 			NavUtils.navigateUpTo(this, new Intent(this, CalendarActivity.class));
 		}
