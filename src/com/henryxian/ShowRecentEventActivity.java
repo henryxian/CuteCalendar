@@ -115,10 +115,7 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 						+ (cal.get(Calendar.MONTH) + 1) + "-" 
 						+ cal.get(Calendar.DAY_OF_MONTH);
 				
-				Log.d(TAG, "this is the timestamp: " + timestamp);
-				Log.d(TAG, "breakpoint");
-				Log.d(TAG, "holder.title: " + holder.title);
-				Log.d(TAG, "holder.timestamp" + holder.timestamp);
+				// set the Textviews in the cell to display content
 				TextView t1 = (TextView)view.findViewById(R.id.text_show_content);
 				TextView t2 = (TextView)view.findViewById(R.id.text_show_date);
 				TextView t3 = (TextView)view.findViewById(R.id.text_show_title);
@@ -130,6 +127,7 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 
 		};
 		
+		// set the listview adapter
 		getListView().setAdapter(adapter);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 

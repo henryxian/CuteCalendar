@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,14 +20,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.henryxian.EventContract.EventEntry;
+import com.henryxian.TimePickerFragment.OnTimeChangedListener;
 
-public class AddEventActivity extends SherlockFragmentActivity implements OnClickListener{
+public class AddEventActivity extends SherlockFragmentActivity implements 
+	OnClickListener, TimePickerFragment.OnTimeChangedListener{
 	private static final String TAG = AddEventActivity.class.getSimpleName();
 	private static String date;
 	private MyAsyncQueryHandler myAsyncQueryHandler;
@@ -36,6 +35,17 @@ public class AddEventActivity extends SherlockFragmentActivity implements OnClic
 	private EditText mEditTextTitle;
 	private EditText mEditTextContent;
 	private Button button;
+	private TimePickerFragment fragment;
+	private int dialogHour;
+	private int dialogMinute;
+	
+	public void setDialogHour(int hour) {
+		this.dialogHour = hour;
+	}
+	
+	public void setDialogMinute(int minute) {
+		this.dialogMinute = minute;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +155,11 @@ public class AddEventActivity extends SherlockFragmentActivity implements OnClic
 	
 	public void showTimePickerDialog(View v) {
 //		Toast.makeText(this, "onclicktime", 1).show();
-		TimePickerFragment fragment = new TimePickerFragment();
+		if (fragment == null) {
+			fragment = new TimePickerFragment();
+		}
 		fragment.show(getSupportFragmentManager(), "timepicker");
+		
 	}
 	
 	private final class okButtonListener implements OnClickListener {
@@ -178,7 +191,22 @@ public class AddEventActivity extends SherlockFragmentActivity implements OnClic
 				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
 				myAsyncQueryHandler.startInsert(0, null, EventProvider.CONTENT_URI, cv);
 				Toast.makeText(AddEventActivity.this, R.string.toast_ok, Toast.LENGTH_SHORT).show();
+				
+//				long calId = 1;
+//				long startMillis = 0;
+//				long endMillis = 0;
+//				Calendar cal = Calendar.getInstance();
+//				cal.set(year, month, day, hourOfDay, minute);
+//				startMillis = cal.getTimeInMillis();
 		}
 		}
+	}
+
+	@Override
+	public void onTimeChanged(int hour, int minute) {
+		// TODO Auto-generated method stub
+		dialogHour = hour;
+		dialogMinute = minute;
+		Toast.makeText(this, String.valueOf(hour), Toast.LENGTH_SHORT).show();;
 	}
 }

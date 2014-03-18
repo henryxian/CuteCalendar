@@ -166,7 +166,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			
 			// set the availabe span of the calendar 
 			// 20 weeks X 7 days = 140 days
-			cal.add(Calendar.DATE, 140);
+			cal.add(Calendar.DATE, 139);
 			Date maxDate = cal.getTime();
 			SchoolWeekCalFragment.setMaxDate(maxDate);
 		}
