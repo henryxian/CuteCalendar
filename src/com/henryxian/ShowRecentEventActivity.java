@@ -1,16 +1,24 @@
 package com.henryxian;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -21,8 +29,14 @@ import com.henryxian.EventContract.EventEntry;
 
 public class ShowRecentEventActivity extends SherlockListActivity{
 	private static final String TAG = ShowRecentEventActivity.class.getSimpleName();
-//	private MyAsyncQueryHanler myAsyncQueryHandler;
-	private SimpleCursorAdapter adapter;
+	private CursorAdapter adapter;
+	
+	static class ViewHolder {
+		TextView description;
+		TextView title;
+		TextView timestamp;
+		int position;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,23 +45,26 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		Cursor cur = managedQuery(EventProvider.CONTENT_URI, null, null, null, null);
+		long calendarId = 1;
+		String selection = " calendar_id = ? ";
+		String[] selectionArgs = 
+				new String[]{
+				Long.toString(calendarId)
+		};
 		
-//		myAsyncQueryHandler = new MyAsyncQueryHanler(this.getContentResolver());
-//		myAsyncQueryHandler
-//			.startQuery(
-//				0, 
-//				null, 
-//				EventProvider.CONTENT_URI, 
-//				null, 
-//				null, 
-//				null, 
-//				null
-//			);
+		Uri uri = Uri.parse("content://com.android.calendar/events");
+		String[] projection = 
+				new String[] {
+				"_id",
+				"title",
+				"dtstart",
+				"description"
+		};
+		
 		String[] dataColumns = new String[]{
-				EventEntry.COLUMN_NAME_TITLE, 
-				EventEntry.COLUMN_NAME_DATE,
-				EventEntry.COLUMN_NAME_CONTENT
+				projection[1], 
+				projection[2],
+				projection[3]
 				};
 		
 		int[] viewIDs = {
@@ -55,7 +72,63 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				R.id.text_show_date,
 				R.id.text_show_content
 				};
-		adapter = new SimpleCursorAdapter(this, R.layout.event_item, cur, dataColumns, viewIDs);
+		
+		Cursor cur = managedQuery(
+				uri, 
+				projection, 
+				selection, 
+				selectionArgs, 
+				null
+				);
+		
+//		adapter = new SimpleCursorAdapter(this, R.layout.event_item, cur, dataColumns, viewIDs);
+		adapter = new CursorAdapter(this, cur) {
+			@Override
+			public View newView(Context context, Cursor cursor, ViewGroup parent) {
+				// TODO Auto-generated method stub
+				ViewHolder holder = new ViewHolder();
+				LayoutInflater inflater = (LayoutInflater)context
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View inflate = inflater.inflate(R.layout.event_item, null);
+				holder.description = (TextView)parent.findViewById(R.id.text_show_content);
+				holder.title = (TextView)parent.findViewById((R.id.text_show_title));
+				holder.timestamp = (TextView)parent.findViewById(R.id.text_show_date);
+				inflate.setTag(holder);
+				return inflate;
+			}
+			
+			@Override
+			public void bindView(View view, Context context, Cursor cursor) {
+				String title;
+				String description;
+				long timestamp;
+				// TODO Auto-generated method stub
+				ViewHolder holder = (ViewHolder)view.getTag();
+				title = cursor.getString(cursor.getColumnIndex("title"));
+				Log.d(TAG, "this is the title: " + title);
+				description =  cursor.getString(cursor.getColumnIndex("description"));
+				Log.d(TAG, "this is the description: " + description);
+				timestamp = cursor.getLong(cursor.getColumnIndex("dtstart"));
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(timestamp);
+				String time = cal.get(Calendar.YEAR) + "-" 
+						+ (cal.get(Calendar.MONTH) + 1) + "-" 
+						+ cal.get(Calendar.DAY_OF_MONTH);
+				
+				Log.d(TAG, "this is the timestamp: " + timestamp);
+				Log.d(TAG, "breakpoint");
+				Log.d(TAG, "holder.title: " + holder.title);
+				Log.d(TAG, "holder.timestamp" + holder.timestamp);
+				TextView t1 = (TextView)view.findViewById(R.id.text_show_content);
+				TextView t2 = (TextView)view.findViewById(R.id.text_show_date);
+				TextView t3 = (TextView)view.findViewById(R.id.text_show_title);
+				Log.d(TAG, "t1: " + t1);
+				t1.setText(description);
+				t2.setText(time);
+				t3.setText(title);
+			}
+
+		};
 		
 		getListView().setAdapter(adapter);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -66,9 +139,9 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				// TODO Auto-generated method stub
 				ListView listView = (ListView)parent;
 				Cursor cursor = (Cursor)listView.getItemAtPosition(position);
-				String content = String.valueOf(cursor.getString(cursor.getColumnIndex(EventEntry.COLUMN_NAME_CONTENT)));
-				if (!"".equals(content)) {
-					Toast.makeText(ShowRecentEventActivity.this, content, Toast.LENGTH_SHORT).show();
+				String description = String.valueOf(cursor.getString(cursor.getColumnIndex("description")));
+				if (description != "null") {
+					Toast.makeText(ShowRecentEventActivity.this, description, Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -84,25 +157,4 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 		}
 		return true;
 	}
-//	private final class MyAsyncQueryHanler extends AsyncQueryHandler {
-//
-//		public MyAsyncQueryHanler(ContentResolver cr) {
-//			super(cr);
-//			// TODO Auto-generated constructor stub
-//		}
-//		@Override
-//		protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-//			// TODO Auto-generated method stub
-//			
-//			String[] dataColumns = new String[]{EventEntry.COLUMN_NAME_TITLE};
-//			int[] viewIDs = {android.R.id.text1};
-//			ShowRecentEventActivity.this.adapter = new SimpleCursorAdapter(
-//					ShowRecentEventActivity.this, 
-//					R.layout.event_item, 
-//					cursor, 
-//					dataColumns, 
-//					viewIDs
-//				);
-//		}
-//	}
 }
