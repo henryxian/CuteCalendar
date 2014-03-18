@@ -26,32 +26,30 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.henryxian.EventContract.EventEntry;
-import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
 public class CalendarActivity extends SherlockFragmentActivity {
 	private static final String TAG = CalendarActivity.class.getSimpleName();
 	
-	private CaldroidFragment caldroidFragment;
+	private SchoolWeekCalFragment SchoolWeekCalFragment;
 	private ActionMode mActionMode;
 	
 	//TODO
 	private void setDateColor(Date date, int count) {
 		if (count == 1) {
-			caldroidFragment.setBackgroundResourceForDate(R.color.free, date);
+			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.free, date);
 		}
 		
 		if (count == 2) {
-			caldroidFragment.setBackgroundResourceForDate(R.color.not_very_busy, date);
+			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.not_very_busy, date);
 		}
 		
 		if (count == 3) {
-			caldroidFragment.setBackgroundResourceForDate(R.color.medium_busy, date);
+			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.medium_busy, date);
 		}
 		
 		if (count > 3) {
-			caldroidFragment.setBackgroundResourceForDate(R.color.busy, date);
+			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.busy, date);
 		}
 	}
 	
@@ -87,7 +85,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-//					caldroidFragment.setBackgroundResourceForDate(R.color.caldroid_sky_blue, date);
+//					SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.caldroid_sky_blue, date);
 					setDateColor(dateTransformed, count);
 				}
 				cursor.close();
@@ -101,7 +99,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		caldroidFragment = new CaldroidFragment();
+		SchoolWeekCalFragment = new SchoolWeekCalFragment();
 		
 		Uri uri = Uri.parse("content://" + EventProvider.AUTHORITY + "/events/counts");		
 		MyAsyncQueryHandler handler = new MyAsyncQueryHandler(this.getContentResolver());
@@ -121,7 +119,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		
 		// restore the fragment
 		if (savedInstanceState != null) {
-			caldroidFragment.restoreStatesFromKey(savedInstanceState,
+			SchoolWeekCalFragment.restoreStatesFromKey(savedInstanceState,
 					"CALDROID_SAVED_STATE");
 		}
 		// If activity is created from fresh
@@ -139,15 +137,15 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			int day = DatePickerPreference.getDay(date);
 			
 			// set the displayed month and year on fresh
-			args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-			args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));	
+			args.putInt(SchoolWeekCalFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+			args.putInt(SchoolWeekCalFragment.YEAR, cal.get(Calendar.YEAR));	
 			
 			// some other custom settings
-			args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
-			args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
-			args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, false);
+			args.putBoolean(SchoolWeekCalFragment.ENABLE_SWIPE, true);
+			args.putBoolean(SchoolWeekCalFragment.SIX_WEEKS_IN_CALENDAR, true);
+			args.putBoolean(SchoolWeekCalFragment.ENABLE_CLICK_ON_DISABLED_DATES, false);
 			
-			caldroidFragment.setArguments(args);
+			SchoolWeekCalFragment.setArguments(args);
 			
 			// set the start date of week retrieved from
 			// the shared preference
@@ -163,19 +161,19 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			cal.add(Calendar.DATE, - (dayOfWeek - 1));
 		
 			Date minDate = cal.getTime();
-			caldroidFragment.setMinDate(minDate);
+			SchoolWeekCalFragment.setMinDate(minDate);
 			Log.d(TAG, "pref date: " + cal.getTime().toString());
 			
 			// set the availabe span of the calendar 
 			// 20 weeks X 7 days = 140 days
 			cal.add(Calendar.DATE, 140);
 			Date maxDate = cal.getTime();
-			caldroidFragment.setMaxDate(maxDate);
+			SchoolWeekCalFragment.setMaxDate(maxDate);
 		}
 
 		// Attach to the activity
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-		t.replace(R.id.fragment_calendar, caldroidFragment);
+		t.replace(R.id.fragment_calendar, SchoolWeekCalFragment);
 		t.commit();
 
 		// Setup listener
@@ -228,7 +226,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		};
 
 		// Setup Caldroid
-		caldroidFragment.setCaldroidListener(listener);
+		SchoolWeekCalFragment.setCaldroidListener(listener);
 	}
 	
 	/**
@@ -239,8 +237,8 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 
-		if (caldroidFragment != null) {
-			caldroidFragment.saveStatesToKey(outState, "CALDROID_SAVED_STATE");
+		if (SchoolWeekCalFragment != null) {
+			SchoolWeekCalFragment.saveStatesToKey(outState, "CALDROID_SAVED_STATE");
 		}
 		}
 	

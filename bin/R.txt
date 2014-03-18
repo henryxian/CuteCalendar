@@ -305,7 +305,7 @@ int id abs__submit_area 0x7f08002f
 int id abs__textButton 0x7f080013
 int id abs__title 0x7f08001b
 int id abs__up 0x7f08000b
-int id action_settings 0x7f08004a
+int id action_settings 0x7f08004d
 int id button_add_positive 0x7f08003b
 int id button_layout 0x7f080033
 int id button_to_settings 0x7f080049
@@ -338,6 +338,9 @@ int id text_show_date 0x7f080045
 int id text_show_title 0x7f080044
 int id text_time 0x7f08003a
 int id textview 0x7f080036
+int id tv1 0x7f08004b
+int id tv2 0x7f08004a
+int id tv3 0x7f08004c
 int id useLogo 0x7f080004
 int id weekday_gridview 0x7f080040
 int id wrap_content 0x7f080000
@@ -370,8 +373,9 @@ int layout date_cell 0x7f030018
 int layout date_grid_fragment 0x7f030019
 int layout event_item 0x7f03001a
 int layout main 0x7f03001b
-int layout sherlock_spinner_dropdown_item 0x7f03001c
-int layout sherlock_spinner_item 0x7f03001d
+int layout schoolweek_cell 0x7f03001c
+int layout sherlock_spinner_dropdown_item 0x7f03001d
+int layout sherlock_spinner_item 0x7f03001e
 int menu main 0x7f0c0000
 int menu settings 0x7f0c0001
 int string abs__action_bar_home_description 0x7f060001
