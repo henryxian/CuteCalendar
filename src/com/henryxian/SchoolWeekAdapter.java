@@ -2,6 +2,7 @@ package com.henryxian;
 
 import hirondelle.date4j.DateTime;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 import android.content.Context;
@@ -49,17 +50,50 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		// Get dateTime of this cell
 		DateTime dateTime = this.datetimeList.get(position);
 		Resources resources = context.getResources();
-
+		
+		int day = dateTime.getDay();
+		int month = dateTime.getMonth();
+		int year = dateTime.getYear();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, day);
+		cal.set(Calendar.MONTH, month - 1);
+		cal.set(Calendar.YEAR, year);
+		
+		int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
+		
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+//		
+		Calendar cal2 = Calendar.getInstance();
+		cal2.set(Calendar.DAY_OF_MONTH, getMinDateTime().getDay());
+		cal2.set(Calendar.MONTH, getMinDateTime().getMonth() - 1);
+		cal2.set(Calendar.YEAR, getMinDateTime().getYear());
+		int firstSchoolWeek = cal2.get(Calendar.WEEK_OF_YEAR);
+		int offset = weekOfYear - firstSchoolWeek + 1;
+//		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		
 		// TODO
-		if (dateTime.getWeekDay() == 1) {
-			tv3.setText(String.valueOf(dateTime.getWeekIndex()));
+		if (dayOfWeek == 1 && offset > 0) {
+			tv3.setText(String.valueOf(weekOfYear));
+			tv2.setText(String.valueOf(offset));
 		} else {
 			tv3.setText("");
+			tv2.setText("");
 		}
+		
+		tv3.setTextColor(resources.getColor(R.color.caldroid_holo_blue_dark));
+		tv2.setTextColor(resources.getColor(R.color.caldroid_holo_blue_dark));
+		
 		// Set color of the dates in previous / next month
 		if (dateTime.getMonth() != month) {
 			tv1.setTextColor(resources
 					.getColor(com.caldroid.R.color.caldroid_darker_gray));
+			if (CaldroidFragment.disabledBackgroundDrawable == -1) {
+				cellView.setBackgroundResource(com.caldroid.R.drawable.disable_cell);
+			} else {
+				cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
+			}
 		}
 
 		boolean shouldResetDiabledView = false;
@@ -110,7 +144,8 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		}
 
 		tv1.setText("" + dateTime.getDay());
-		tv2.setText("Hi");
+		
+//		tv2.setText("Hi");
 
 		// Somehow after setBackgroundResource, the padding collapse.
 		// This is to recover the padding
