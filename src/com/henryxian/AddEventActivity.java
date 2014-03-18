@@ -38,6 +38,9 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	private TimePickerFragment fragment;
 	private int dialogHour;
 	private int dialogMinute;
+	private int day;
+	private int month;
+	private int year;
 	
 	public void setDialogHour(int hour) {
 		this.dialogHour = hour;
@@ -72,6 +75,12 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		mTextView = (TextView)findViewById(R.id.text_date);
 		if (bundle != null){
 			date = bundle.getString("Date");
+			
+			// parse the date passing from the intent
+			day = DatePickerPreference.getDay(date);
+			month = DatePickerPreference.getMonth(date);
+			year = DatePickerPreference.getYear(date);
+			
 			if (date != null){
 			mTextView.setText(date);
 			} 
@@ -84,9 +93,9 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			} 
 		} else {
 			Calendar cal = Calendar.getInstance();
-			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH) + 1;
-			int day = cal.get(Calendar.DAY_OF_MONTH);
+			year = cal.get(Calendar.YEAR);
+			month = cal.get(Calendar.MONTH) + 1;
+			day = cal.get(Calendar.DAY_OF_MONTH);
 			
 			String month2;
 			String day2;
@@ -170,6 +179,7 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			ContentValues cv = new ContentValues();
 			mEditTextTitle = (EditText)findViewById(R.id.edit_event_title);
 			mEditTextContent = (EditText)findViewById(R.id.edit_event_content);
+			Uri uri = Uri.parse("content://com.android.calendar/events");
 			
 			if (mEditTextTitle.getText().length() == 0) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(AddEventActivity.this);
@@ -185,19 +195,31 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 						}
 					}).show();
 			} else {
-				cv.put(EventEntry.COLUMN_NAME_TITLE, mEditTextTitle.getText().toString());
-				cv.put(EventEntry.COLUMN_NAME_CONTENT, mEditTextContent.getText().toString());
-				cv.put(EventEntry.COLUMN_NAME_DATE, date);
+//				cv.put(EventEntry.COLUMN_NAME_TITLE, mEditTextTitle.getText().toString());
+//				cv.put(EventEntry.COLUMN_NAME_CONTENT, mEditTextContent.getText().toString());
+//				cv.put(EventEntry.COLUMN_NAME_DATE, date);
+//				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
+//				myAsyncQueryHandler.startInsert(0, null, EventProvider.CONTENT_URI, cv);
+//				Toast.makeText(AddEventActivity.this, R.string.toast_ok, Toast.LENGTH_SHORT).show();
+				// TODO
+				long calId = 1;
+				long startMillis = 0;
+				long endMillis = 0;
+				Calendar cal = Calendar.getInstance();
+				cal.set(year, month, day, dialogHour, dialogMinute);
+				startMillis = cal.getTimeInMillis();
+				cv.put("calendar_id", calId);
+				cv.put("dtstart", startMillis);
+				cv.put("description", mEditTextContent.getText().toString());
+				cv.put("title", mEditTextTitle.getText().toString());
 				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
-				myAsyncQueryHandler.startInsert(0, null, EventProvider.CONTENT_URI, cv);
-				Toast.makeText(AddEventActivity.this, R.string.toast_ok, Toast.LENGTH_SHORT).show();
-				
-//				long calId = 1;
-//				long startMillis = 0;
-//				long endMillis = 0;
-//				Calendar cal = Calendar.getInstance();
-//				cal.set(year, month, day, hourOfDay, minute);
-//				startMillis = cal.getTimeInMillis();
+				myAsyncQueryHandler.startInsert(
+						0, 
+						null, 
+						uri, 
+						cv
+					);
+				Toast.makeText(AddEventActivity.this, "ok!", Toast.LENGTH_SHORT).show();
 		}
 		}
 	}
@@ -207,6 +229,6 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		// TODO Auto-generated method stub
 		dialogHour = hour;
 		dialogMinute = minute;
-		Toast.makeText(this, String.valueOf(hour), Toast.LENGTH_SHORT).show();;
+//		Toast.makeText(this, String.valueOf(hour), Toast.LENGTH_SHORT).show();;
 	}
 }
