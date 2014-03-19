@@ -44,8 +44,8 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		TextView tv2 = (TextView) cellView.findViewById(R.id.tv2);
 		TextView tv3 = (TextView) cellView.findViewById(R.id.tv3);
 
-//		tv1.setTextColor(Color.RED);
 		tv1.setTextColor(Color.BLACK);
+//		tv1.setBackgroundColor(resources.getColor(R.color.abs__background_holo_light));
 
 		// Get dateTime of this cell
 		DateTime dateTime = this.datetimeList.get(position);
@@ -73,16 +73,17 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		int offset = weekOfYear - firstSchoolWeek + 1;
 //		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 		
-		// TODO
 		if (dayOfWeek == 1 && offset > 0 && offset < 21) {
 			tv3.setText(String.valueOf(weekOfYear));
+			tv3.setBackgroundColor(resources.getColor(R.color.xian_yellow));
 			tv2.setText(String.valueOf(offset));
+			tv2.setBackgroundColor(resources.getColor(R.color.xian_yellow));
 		} else {
 			tv3.setText("");
 			tv2.setText("");
 		}
 		
-		tv3.setTextColor(resources.getColor(R.color.caldroid_holo_blue_dark));
+		tv3.setTextColor(resources.getColor(R.color.caldroid_holo_blue_light));
 		tv2.setTextColor(resources.getColor(R.color.caldroid_holo_blue_dark));
 		
 		// Set color of the dates in previous / next month
@@ -92,7 +93,8 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 			if (CaldroidFragment.disabledBackgroundDrawable == -1) {
 				cellView.setBackgroundResource(com.caldroid.R.drawable.disable_cell);
 			} else {
-				cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
+//				cellView.setBackgroundColor(resources.getColor(R.color.busy));
+//				cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
 			}
 		}
 

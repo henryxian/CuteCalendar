@@ -45,6 +45,12 @@
             android:label="@string/title_activity_settings" >
         </activity>
         
+        <activity 
+            android:name=".AddClassActivity"
+            android:label="@string/title_activity_addClass"
+            >
+        </activity> 
+        
         <activity
             android:name=".ShowRecentEventActivity"
             android:label="@string/title_activity_showEvent"
@@ -59,6 +65,7 @@
             android:authorities="com.henryxian.EventProvider" 
             android:exported="false">  
         </provider>
+        
     </application>
 
 </manifest>

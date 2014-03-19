@@ -15,6 +15,9 @@
     <!-- A really bright Holo shade of blue -->
     <color name="caldroid_sky_blue">#FFA3E8F7</color>
     
+    <color name="xian_yellow">#FFFF33</color>
+    <color name="xian_orange">#FF8533</color>
+    
     <color name="busy">#F81919</color>
     <color name="medium_busy">#F8F819</color>
     <color name="not_very_busy">#9090F7</color>

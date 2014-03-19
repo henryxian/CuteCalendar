@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="class_array">
+        <item>first class</item>
+        <item>second class</item>
+        <item>third class</item>
+        <item>fourth class</item>
+        <item>fifth class</item>
+    </string-array>
+</resources>

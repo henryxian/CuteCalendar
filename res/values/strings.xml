@@ -6,6 +6,7 @@
     <string name="title_activity_settings">設置</string>
     <string name="title_activity_addEvent">新增事件</string>
     <string name="title_activity_showEvent">事件列表</string>
+    <string name="title_activity_addClass">添加課程</string>
     
     <string name="pref_category_basic">基本設置</string>
     
@@ -43,4 +44,8 @@
     <string name="alertdialog_message">標題不能爲空</string>
     <string name="alertdialog_dismiss">關閉</string>
     <string name="toast_ok">ok</string>
+    
+    <string name="addClass_text">課程名稱</string>
+    <string name="addClass_hint">請輸入課程名</string>
+    <string name="addClass_spinner_text">節次</string>
 </resources>

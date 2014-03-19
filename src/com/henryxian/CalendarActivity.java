@@ -31,25 +31,25 @@ import com.roomorama.caldroid.CaldroidListener;
 public class CalendarActivity extends SherlockFragmentActivity {
 	private static final String TAG = CalendarActivity.class.getSimpleName();
 	
-	private SchoolWeekCalFragment SchoolWeekCalFragment;
+	private SchoolWeekCalFragment schoolWeekCalFragment;
 	private ActionMode mActionMode;
 	
 	//TODO
 	private void setDateColor(Date date, int count) {
 		if (count == 1) {
-			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.free, date);
+			schoolWeekCalFragment.setBackgroundResourceForDate(R.color.free, date);
 		}
 		
 		if (count == 2) {
-			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.not_very_busy, date);
+			schoolWeekCalFragment.setBackgroundResourceForDate(R.color.not_very_busy, date);
 		}
 		
 		if (count == 3) {
-			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.medium_busy, date);
+			schoolWeekCalFragment.setBackgroundResourceForDate(R.color.medium_busy, date);
 		}
 		
 		if (count > 3) {
-			SchoolWeekCalFragment.setBackgroundResourceForDate(R.color.busy, date);
+			schoolWeekCalFragment.setBackgroundResourceForDate(R.color.busy, date);
 		}
 	}
 	
@@ -99,7 +99,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SchoolWeekCalFragment = new SchoolWeekCalFragment();
+		schoolWeekCalFragment = new SchoolWeekCalFragment();
 		
 		Uri uri = Uri.parse("content://" + EventProvider.AUTHORITY + "/events/counts");		
 		MyAsyncQueryHandler handler = new MyAsyncQueryHandler(this.getContentResolver());
@@ -107,19 +107,29 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		
 		setContentView(R.layout.activity_calendar);
 
+		// TODO
 		Button button = (Button)findViewById(R.id.customize_button);
+		Button button2 = (Button)findViewById(R.id.show_dialog_button);
+		
 		button.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				startActivity(new Intent(CalendarActivity.this, ShowRecentEventActivity.class));
 			}
 		});
+		 // TODO
+		button2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(CalendarActivity.this, AddClassActivity.class));
+			}
+		});
 		
 		// restore the fragment
 		if (savedInstanceState != null) {
-			SchoolWeekCalFragment.restoreStatesFromKey(savedInstanceState,
+			schoolWeekCalFragment.restoreStatesFromKey(savedInstanceState,
 					"CALDROID_SAVED_STATE");
 		}
 		// If activity is created from fresh
@@ -145,7 +155,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			args.putBoolean(SchoolWeekCalFragment.SIX_WEEKS_IN_CALENDAR, true);
 			args.putBoolean(SchoolWeekCalFragment.ENABLE_CLICK_ON_DISABLED_DATES, false);
 			
-			SchoolWeekCalFragment.setArguments(args);
+			schoolWeekCalFragment.setArguments(args);
 			
 			// set the start date of week retrieved from
 			// the shared preference
@@ -161,19 +171,19 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			cal.add(Calendar.DATE, - (dayOfWeek - 1));
 		
 			Date minDate = cal.getTime();
-			SchoolWeekCalFragment.setMinDate(minDate);
+			schoolWeekCalFragment.setMinDate(minDate);
 			Log.d(TAG, "pref date: " + cal.getTime().toString());
 			
 			// set the availabe span of the calendar 
 			// 20 weeks X 7 days = 140 days
 			cal.add(Calendar.DATE, 139);
 			Date maxDate = cal.getTime();
-			SchoolWeekCalFragment.setMaxDate(maxDate);
+			schoolWeekCalFragment.setMaxDate(maxDate);
 		}
 
 		// Attach to the activity
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-		t.replace(R.id.fragment_calendar, SchoolWeekCalFragment);
+		t.replace(R.id.fragment_calendar, schoolWeekCalFragment);
 		t.commit();
 
 		// Setup listener
@@ -226,7 +236,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		};
 
 		// Setup Caldroid
-		SchoolWeekCalFragment.setCaldroidListener(listener);
+		schoolWeekCalFragment.setCaldroidListener(listener);
 	}
 	
 	/**
@@ -237,8 +247,8 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 
-		if (SchoolWeekCalFragment != null) {
-			SchoolWeekCalFragment.saveStatesToKey(outState, "CALDROID_SAVED_STATE");
+		if (schoolWeekCalFragment != null) {
+			schoolWeekCalFragment.saveStatesToKey(outState, "CALDROID_SAVED_STATE");
 		}
 		}
 	
