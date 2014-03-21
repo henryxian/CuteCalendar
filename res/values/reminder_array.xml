@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="reminder_array">
+        <item>無提醒</item>
+        <item>提前1分鐘</item>
+        <item>提前15分鐘</item>
+        <item>提前一小時</item>
+    </string-array>
+</resources>

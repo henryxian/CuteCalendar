@@ -5,6 +5,7 @@ import java.util.Calendar;
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,19 +13,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.henryxian.EventContract.EventEntry;
-import com.henryxian.TimePickerFragment.OnTimeChangedListener;
 
 public class AddEventActivity extends SherlockFragmentActivity implements 
 	OnClickListener, TimePickerFragment.OnTimeChangedListener{
@@ -42,6 +46,13 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	private int month;
 	private int year;
 	
+	private Spinner spinnerReminder;
+	private ArrayAdapter<CharSequence> adapterReminder;
+	private Spinner spinnerReccur;
+	private ArrayAdapter<CharSequence> adapterReccur;
+	private int reminder;
+	private int reccur;
+	
 	public void setDialogHour(int hour) {
 		this.dialogHour = hour;
 	}
@@ -50,15 +61,50 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		this.dialogMinute = minute;
 	}
 	
+	public int getReminder() {
+		return reminder;
+	}
+	
+	public int getReccur() {
+		return reccur;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.add_event);
 		
 		button = (Button)findViewById(R.id.button_add_positive);
 		button.setOnClickListener(new okButtonListener());
+		
+		// Set up the reminder spinner
+		spinnerReminder = (Spinner)findViewById(R.id.addEvent_spinner_reminder);
+		adapterReminder = ArrayAdapter.createFromResource(
+				this, R.array.reminder_array, 
+				android.R.layout.simple_spinner_item
+				);
+		adapterReminder.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerReminder.setAdapter(adapterReminder);
+		spinnerReminder.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				AddEventActivity.this.reminder = position;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		// Set up the reccurence spinner
+		
+		
 //		button.setOnClickListener(new OnClickListener() {
 //			
 //			@Override
@@ -155,10 +201,39 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			// TODO Auto-generated constructor stub
 		}
 		
+		// TODO
+		public void insertReminder(long eventId, int minutes) {
+			ContentValues cv = new ContentValues();
+			cv.put("event_id", eventId);
+			cv.put("minutes", 0);
+			// DEFAULT METHOD
+			cv.put("method", 4);
+			AddEventActivity.this.getContentResolver()
+				.insert(
+					Uri.parse("content://com.android.calendar/reminders"),
+					cv
+				);
+		}
 		@Override
 		protected void onInsertComplete(int token, Object cookie, Uri uri) {
 			// TODO Auto-generated method stub
 			super.onInsertComplete(token, cookie, uri);
+			Log.d(TAG, uri.toString());
+			long eventId = ContentUris.parseId(uri);
+			switch(AddEventActivity.this.getReminder())
+			{
+			case 0:
+				break;
+			case 1:
+				insertReminder(eventId, 1);
+				break;
+			case 2:
+				insertReminder(eventId, 15);
+				break;
+			default:
+				insertReminder(eventId, 60);
+				break;
+			};
 		}
 	}
 	

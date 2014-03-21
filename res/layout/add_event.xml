@@ -45,6 +45,48 @@
         	/>
     </LinearLayout>
     
+    <LinearLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        >
+        <TextView 
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/addEvent_text_reccur"
+            />
+        <Spinner 
+            android:id="@+id/addEvent_spinner_reccur"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:text="@string/addEvent_text_reminder"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
+        <Spinner 
+            android:id="@+id/addEvent_spinner_reminder"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            />
+    </LinearLayout>
+    
 	<TextView    
 	    android:id="@+id/text_date"
         android:orientation="horizontal"
@@ -73,4 +115,5 @@
 	    android:layout_height="wrap_content"
 	    >
 	</Button>
+	
 </LinearLayout>

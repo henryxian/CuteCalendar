@@ -22,7 +22,7 @@ public class TimePickerFragment extends SherlockDialogFragment
 	
 	
 	final Calendar c = Calendar.getInstance();
-	int hour = c.get(Calendar.HOUR);
+	int hour = c.get(Calendar.HOUR_OF_DAY);
 	int minute = c.get(Calendar.MINUTE);
 			
 	@Override
