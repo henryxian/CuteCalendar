@@ -98,7 +98,6 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
-				
 			}
 		});
 		
@@ -142,6 +141,8 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			year = cal.get(Calendar.YEAR);
 			month = cal.get(Calendar.MONTH);
 			day = cal.get(Calendar.DAY_OF_MONTH);
+			dialogHour = cal.get(Calendar.HOUR_OF_DAY);
+			dialogMinute = cal.get(Calendar.MINUTE);
 			
 			String month2;
 			String day2;
