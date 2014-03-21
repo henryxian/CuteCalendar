@@ -140,15 +140,15 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		} else {
 			Calendar cal = Calendar.getInstance();
 			year = cal.get(Calendar.YEAR);
-			month = cal.get(Calendar.MONTH) + 1;
+			month = cal.get(Calendar.MONTH);
 			day = cal.get(Calendar.DAY_OF_MONTH);
 			
 			String month2;
 			String day2;
-			if (month < 10) {
-				month2 = "0" + month;
+			if (month < 9) {
+				month2 = "0" + (month + 1);
 			} else {
-				month2 = String.valueOf(month);
+				month2 = String.valueOf(month + 1);
 			}
 			
 			if (day < 10) {
