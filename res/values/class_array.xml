@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="class_array">
-        <item>first class</item>
-        <item>second class</item>
-        <item>third class</item>
-        <item>fourth class</item>
-        <item>fifth class</item>
+        <item>第一大節</item>
+        <item>第二大節</item>
+        <item>第三大節</item>
+        <item>第四大節</item>
+        <item>第五大節</item>
     </string-array>
 </resources>
