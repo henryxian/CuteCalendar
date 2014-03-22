@@ -49,8 +49,10 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	
 	private Spinner spinnerReminder;
 	private ArrayAdapter<CharSequence> adapterReminder;
+	
 	private Spinner spinnerReccur;
 	private ArrayAdapter<CharSequence> adapterReccur;
+	
 	private int reminder;
 	private int reccur;
 	
@@ -102,17 +104,31 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			}
 		});
 		
+		
 		// Set up the reccurence spinner
-		
-		
-//		button.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				Toast.makeText(AddEventActivity.this, "OK", Toast.LENGTH_LONG).show();
-//			}
-//		});
+		spinnerReccur = (Spinner)findViewById(R.id.addEvent_spinner_reccur);
+		adapterReccur = ArrayAdapter.createFromResource(
+				this, 
+				R.array.reccur_array, 
+				android.R.layout.simple_spinner_item
+			);
+		adapterReccur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerReccur.setAdapter(adapterReccur);
+		spinnerReccur.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				AddEventActivity.this.reccur = position;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		Intent intent = getIntent();
@@ -211,7 +227,7 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			ContentValues cv = new ContentValues();
 			cv.put("event_id", eventId);
 			cv.put("minutes", 0);
-			// DEFAULT METHOD
+			// METHOD ALARM
 			cv.put("method", 4);
 			AddEventActivity.this.getContentResolver()
 				.insert(
@@ -275,15 +291,10 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 						}
 					}).show();
 			} else {
-//				cv.put(EventEntry.COLUMN_NAME_TITLE, mEditTextTitle.getText().toString());
-//				cv.put(EventEntry.COLUMN_NAME_CONTENT, mEditTextContent.getText().toString());
-//				cv.put(EventEntry.COLUMN_NAME_DATE, date);
-//				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
-//				myAsyncQueryHandler.startInsert(0, null, EventProvider.CONTENT_URI, cv);
-//				Toast.makeText(AddEventActivity.this, R.string.toast_ok, Toast.LENGTH_SHORT).show();
-				// TODO
 				long calId = 1;
 				long startMillis = 0;
+				// TODO endmillis insert
+				// TODO add recurrence rule
 				long endMillis = 0;
 				Calendar cal = Calendar.getInstance();
 				cal.set(year, month, day, dialogHour, dialogMinute);

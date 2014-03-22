@@ -1,5 +1,7 @@
 package com.henryxian;
 
+import java.util.Calendar;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,12 +28,26 @@ public class AddClassActivity extends SherlockActivity implements
 	private Spinner spinnerReccur;
 	private Button buttonOk;
 	
+	private Spinner spinnerStartWeek;
+	private ArrayAdapter<CharSequence> adapterStartWeek;
+	
+	private Spinner spinnerEndWeek;
+	private ArrayAdapter<CharSequence> adapterEndWeek;
+	
 	private long startMillis;
 	private long endMillis;
 	
 	private int classOrder;
 	private int weekDay;
 	private int reccur;
+	
+	private int classStartHour;
+	private int classStartMin;
+	private int classEndHour;
+	private int classEndMin;
+	
+	private int startWeek;
+	private int endWeek;
 	
 	// recurrence flags
 	private static final int REC_WEEK = 0;
@@ -44,6 +60,37 @@ public class AddClassActivity extends SherlockActivity implements
 	private static final int THIRD_CLASS = 2;
 	private static final int FOURTH_CLASS = 3;
 	private static final int FIFTH_CLASS = 4;
+	
+	protected void setClass(int position) {
+		switch(position) {
+		case 0:
+			setClassHourMin(8, 30, 10, 5);
+			break;
+		case 1:
+			setClassHourMin(10, 25, 12, 0);
+			break;
+		case 2:
+			setClassHourMin(13, 50, 15, 25);
+			break;
+		case 3:
+			setClassHourMin(15, 45, 17, 20);
+			break;
+		case 4:
+			setClassHourMin(18, 20, 21, 0);
+			break;
+		default:
+			setClassHourMin(8, 30, 10, 5);
+			break;
+		}
+	}
+	
+	protected void setClassHourMin(int classStartHour, 
+			int classStartMin, int classEndHour, int classEndMin) {
+		this.classStartHour = classStartHour;
+		this.classStartMin = classStartMin;
+		this.classEndHour = classEndHour;
+		this.classEndMin = classEndMin;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +110,21 @@ public class AddClassActivity extends SherlockActivity implements
 		adapterClassOrder.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerClassOrder.setAdapter(adapterClassOrder);
 		spinnerClassOrder.setOnItemSelectedListener(this);
+		spinnerClassOrder.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				setClass(position);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		// set up the week day spinner
 		this.spinnerweekDay = (Spinner)findViewById(R.id.addClass_spinner_weekDay);
@@ -113,8 +175,58 @@ public class AddClassActivity extends SherlockActivity implements
 			}
 		});
 		
-	}
+		// Set up the start-week spinner
+		spinnerStartWeek = (Spinner)findViewById(R.id.addClass_spinner_classStartWeek);
+		adapterStartWeek = ArrayAdapter.createFromResource(
+				this, 
+				R.array.schoolweek_array, 
+				android.R.layout.simple_spinner_item
+			);
+		adapterStartWeek.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerStartWeek.setAdapter(adapterStartWeek);
+		spinnerStartWeek.setOnItemSelectedListener(new OnItemSelectedListener() {
 
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				AddClassActivity.this.startWeek = position + 1;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		//Set up the end-week spinner
+		spinnerEndWeek = (Spinner)findViewById(R.id.addClass_spinner_classEndWeek);
+		adapterEndWeek = ArrayAdapter.createFromResource(
+				this, 
+				R.array.schoolweek_array, 
+				android.R.layout.simple_spinner_item
+			);
+		adapterEndWeek.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerEndWeek.setAdapter(adapterEndWeek);
+		spinnerEndWeek.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				AddClassActivity.this.endWeek = position + 1;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
