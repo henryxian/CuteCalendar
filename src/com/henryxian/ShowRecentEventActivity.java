@@ -51,6 +51,7 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				new String[]{
 				Long.toString(calendarId)
 		};
+		String sortOrder = "dtstart DESC";
 		
 		Uri uri = Uri.parse("content://com.android.calendar/events");
 		String[] projection = 
@@ -78,7 +79,7 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				projection, 
 				selection, 
 				selectionArgs, 
-				null
+				sortOrder
 				);
 		
 //		adapter = new SimpleCursorAdapter(this, R.layout.event_item, cur, dataColumns, viewIDs);
