@@ -35,7 +35,8 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	private static final String TAG = AddEventActivity.class.getSimpleName();
 	private static String date;
 	private MyAsyncQueryHandler myAsyncQueryHandler;
-	private TextView mTextView;
+	private TextView mTextDate;
+	private TextView mTextTime;
 	private EditText mEditTextTitle;
 	private EditText mEditTextContent;
 	private Button button;
@@ -117,7 +118,9 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		
-		mTextView = (TextView)findViewById(R.id.text_date);
+		mTextDate = (TextView)findViewById(R.id.text_date);
+		mTextTime = (TextView)findViewById(R.id.text_time);
+		
 		if (bundle != null){
 			date = bundle.getString("Date");
 			
@@ -127,7 +130,7 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			year = DatePickerPreference.getYear(date);
 			
 			if (date != null){
-			mTextView.setText(date);
+			mTextDate.setText(date);
 			} 
 			else {
 //				Calendar cal = Calendar.getInstance();
@@ -159,7 +162,8 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			}
 			
 			date = year + "-" + month2 + "-" + day2;
-			mTextView.setText(date);
+			mTextDate.setText(date);
+			mTextTime.setText("•rég£º " + dialogHour + ":" + dialogMinute);
 		}
 	}
 	
@@ -305,6 +309,7 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		// TODO Auto-generated method stub
 		dialogHour = hour;
 		dialogMinute = minute;
+		mTextTime.setText("•rég: " + dialogHour + ":" + dialogMinute); 
 //		Toast.makeText(this, String.valueOf(hour), Toast.LENGTH_SHORT).show();;
 	}
 }

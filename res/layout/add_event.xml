@@ -102,7 +102,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_width="match_parent"
 	    android:textAppearance="?android:attr/textAppearanceLarge"
-	    android:text="時間" 
+	    android:text="@string/addEvent_text_time" 
 	    android:clickable="true"
 	    android:onClick="showTimePickerDialog"
 	    android:gravity="center"
