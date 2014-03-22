@@ -87,7 +87,7 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		tv2.setTextColor(resources.getColor(R.color.caldroid_holo_blue_dark));
 		
 		// Set color of the dates in previous / next month
-		if (dateTime.getMonth() != month) {
+		if (dateTime.getMonth() != this.month) {
 			tv1.setTextColor(resources
 					.getColor(com.caldroid.R.color.caldroid_darker_gray));
 			if (CaldroidFragment.disabledBackgroundDrawable == -1) {
@@ -95,6 +95,7 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 			} else {
 //				cellView.setBackgroundColor(resources.getColor(R.color.busy));
 //				cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
+				cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
 			}
 		}
 
