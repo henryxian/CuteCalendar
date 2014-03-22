@@ -2,6 +2,7 @@ package com.henryxian;
 
 import hirondelle.date4j.DateTime;
 
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -145,6 +146,16 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 				cellView.setBackgroundResource(com.caldroid.R.drawable.cell_bg);
 			}
 		}
+		
+		// TODO
+		HashMap<DateTime, Integer> backgroundForDateTimeMap = 
+				(HashMap<DateTime, Integer>) caldroidData.get(CaldroidFragment._BACKGROUND_FOR_DATETIME_MAP);
+		if (backgroundForDateTimeMap != null) {
+			Integer backgroundResource = backgroundForDateTimeMap.get(dateTime);
+			if (backgroundResource != null) {
+				cellView.setBackgroundResource(backgroundResource.intValue());
+			}
+		}
 
 		tv1.setText("" + dateTime.getDay());
 		
@@ -154,7 +165,6 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		// This is to recover the padding
 		cellView.setPadding(leftPadding, topPadding, rightPadding,
 				bottomPadding);
-
 		return cellView;
 	}
 
