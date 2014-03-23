@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.henryxian.GCalendarContract.Events;
 
 public class AddEventActivity extends SherlockFragmentActivity implements 
 	OnClickListener, TimePickerFragment.OnTimeChangedListener{
@@ -299,13 +300,13 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 				Calendar cal = Calendar.getInstance();
 				cal.set(year, month, day, dialogHour, dialogMinute);
 				startMillis = cal.getTimeInMillis();
-				cv.put("calendar_id", calId);
-				cv.put("dtstart", startMillis);
-				cv.put("description", mEditTextContent.getText().toString());
-				cv.put("title", mEditTextTitle.getText().toString());
+				cv.put(Events.CALENDAR_ID, calId);
+				cv.put(Events.DTSTART, startMillis);
+				cv.put(Events.DESCRIPTION, mEditTextContent.getText().toString());
+				cv.put(Events.TITLE, mEditTextTitle.getText().toString());
 				// TODO rrule
 				String rrule = reccur == 0 ? "FREQ=WEEKLY" : "FREQ=MONTHLY";
-				cv.put("rrule", rrule);
+				cv.put(Events.RRULE, rrule);
 				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
 				myAsyncQueryHandler.startInsert(
 						0, 
