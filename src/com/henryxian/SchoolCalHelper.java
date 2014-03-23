@@ -8,10 +8,9 @@ import android.util.Log;
  * This is a school calendar helper class.
  */
 public class SchoolCalHelper {
-	// calculate the week of day which starts
-	// from monday
 	private static final String TAG = "SchoolCalHelper";
-	
+	// Calculate the day of week which starts
+	// from Monday
 	public static int dayOfWeek(int day) {
 		day = day - 1;
 		day = day == 0 ? 7 : day;
