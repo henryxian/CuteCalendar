@@ -118,7 +118,6 @@ public class CalendarActivity extends SherlockFragmentActivity {
 				startActivity(new Intent(CalendarActivity.this, ShowRecentEventActivity.class));
 			}
 		});
-		 // TODO
 		button2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -164,11 +163,13 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			// week starts from Monday
 			Log.d(TAG, "day of week:" + 
 					String.valueOf(cal.get(Calendar.DAY_OF_WEEK)));
-			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 			// calculate the day of week
-			dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+//			dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+			
+//			dayOfWeek = SchoolCalHelper.dayOfWeek(dayOfWeek);
 			// shift the day to the first day of the week.
-			cal.add(Calendar.DATE, - (dayOfWeek - 1));
+			cal.add(Calendar.DATE, - SchoolCalHelper.offset(dayOfWeek));
 		
 			Date minDate = cal.getTime();
 			schoolWeekCalFragment.setMinDate(minDate);

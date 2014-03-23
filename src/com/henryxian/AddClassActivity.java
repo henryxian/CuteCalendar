@@ -1,5 +1,7 @@
 package com.henryxian;
 
+import java.util.Calendar;
+
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
@@ -10,6 +12,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -20,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.henryxian.GCalendarContract.Events;
 
 public class AddClassActivity extends SherlockActivity implements 
 					android.widget.AdapterView.OnItemSelectedListener{
@@ -160,7 +164,7 @@ public class AddClassActivity extends SherlockActivity implements
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				AddClassActivity.this.weekDay = position;
+				AddClassActivity.this.weekDay = position + 1;
 			}
 
 			@Override
@@ -261,12 +265,13 @@ public class AddClassActivity extends SherlockActivity implements
 	
 	public void confirmAddClass(View view) {
 		String className = editTextClassName.getText().toString();
-		if (className.length() == 0) {
+		if (className.length() == 0 || (startWeek > endWeek)) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			if (className.length() == 0){
+				builder.setMessage(R.string.addClass_alertDialog_messageClassNull);
+			}
 			if (startWeek > endWeek) {
 				builder.setMessage(R.string.addClass_alertDialog_messageOutOfEndWeek);
-			} else {
-				builder.setMessage(R.string.addClass_alertDialog_messageClassNull);
 			}
 			builder.setTitle(R.string.addClass_alertDialog_title)
 				.setPositiveButton(R.string.addClass_alertDialog_dismiss, new OnClickListener() {
@@ -279,7 +284,44 @@ public class AddClassActivity extends SherlockActivity implements
 		}
 		else {
 			// TODO insert class
+			int date[] = SchoolCalHelper.getSchoolCalDate(
+					sessionStartYear, 
+					sessionStartMonth, 
+					sessionStartDay, 
+					startWeek, 
+					weekDay
+				);
+			Log.d(TAG, "sessionStartDate: " + sessionStartDate);
+			Log.d(TAG, "sessionStartDay: " + sessionStartDay);
+			Log.d(TAG, "sessionStartMonth: " + sessionStartMonth);
+			Log.d(TAG, "sessionStartYear: " + sessionStartYear);
+			
+			Calendar calStart = Calendar.getInstance();
+			Calendar calEnd = Calendar.getInstance();
+			calStart.set(date[0], date[1] - 1, date[2], classStartHour, classStartMin);
+			Log.d(TAG, "date[0]: " + date[0]);
+			Log.d(TAG, "date[1]: " + date[1]);
+			Log.d(TAG, "date[2]: " + date[2]);
+			
+			calEnd.set(date[0], date[1] - 1, date[2], classEndHour, classEndMin);
+			
+			startMillis = calStart.getTimeInMillis();
+			endMillis = calEnd.getTimeInMillis();
+			
 			ContentValues cv = new ContentValues();
+			cv.put(Events.CALENDAR_ID, 1);
+			cv.put(Events.TITLE, className);
+			cv.put(Events.DTSTART, startMillis);
+			cv.put(Events.DTEND, endMillis);
+			String rrule = "FREQ=WEEKLY;COUNT=" + (endWeek - startWeek + 1);
+			cv.put(Events.RRULE, rrule);
+			
+			new MyAsyncQeuryHandler(getContentResolver())
+				.startInsert(
+						1, 
+						null, 
+						Events.URI, 
+						cv);
 			
 			Toast.makeText(this, 
 					" ClassName " + className +
