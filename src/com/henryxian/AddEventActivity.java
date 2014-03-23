@@ -30,6 +30,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.henryxian.GCalendarContract.Events;
+import com.henryxian.GCalendarContract.Reminders;
 
 public class AddEventActivity extends SherlockFragmentActivity implements 
 	OnClickListener, TimePickerFragment.OnTimeChangedListener{
@@ -226,13 +227,13 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		// TODO
 		public void insertReminder(long eventId, int minutes) {
 			ContentValues cv = new ContentValues();
-			cv.put("event_id", eventId);
-			cv.put("minutes", 0);
-			// METHOD ALARM
-			cv.put("method", 4);
+			cv.put(Reminders.EVENT_ID, eventId);
+			cv.put(Reminders.MINUTES, minutes);
+			// METHOD DEFAULT
+			cv.put(Reminders.METHOD, Reminders.METHOD_DEFAULT);
 			AddEventActivity.this.getContentResolver()
 				.insert(
-					Uri.parse("content://com.android.calendar/reminders"),
+					Reminders.URI,
 					cv
 				);
 		}

@@ -49,7 +49,7 @@
     <string name="addClass_hint">請輸入課程名</string>
     <string name="addClass_classOrder_text">節次</string>
     <string name="addClass_weekDay_text">星期幾</string>
-    <string name="addClass_recurr_text">循環發生</string>
+    <string name="addClass_text_reminder">提醒</string>
     <string name="addClass_button_ok">確定</string>
     <string name="addClass_text_classStartWeek">開始周</string>
     <string name="addClass_text_classEndWeek">結束周</string>

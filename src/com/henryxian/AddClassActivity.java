@@ -5,6 +5,7 @@ import java.util.Calendar;
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.henryxian.GCalendarContract.Events;
+import com.henryxian.GCalendarContract.Reminders;
 
 public class AddClassActivity extends SherlockActivity implements 
 					android.widget.AdapterView.OnItemSelectedListener{
@@ -31,13 +33,10 @@ public class AddClassActivity extends SherlockActivity implements
 	
 	private ArrayAdapter<CharSequence> adapterClassOrder;
 	private ArrayAdapter<CharSequence> adapterweekDay;
-	private ArrayAdapter<CharSequence> adapterReccur;
 	
 	private EditText editTextClassName;
 	private Spinner spinnerClassOrder;
 	private Spinner spinnerweekDay;
-	private Spinner spinnerReccur;
-	private Button buttonOk;
 	
 	private Spinner spinnerStartWeek;
 	private ArrayAdapter<CharSequence> adapterStartWeek;
@@ -45,12 +44,15 @@ public class AddClassActivity extends SherlockActivity implements
 	private Spinner spinnerEndWeek;
 	private ArrayAdapter<CharSequence> adapterEndWeek;
 	
+	private Spinner spinnerReminder;
+	private ArrayAdapter<CharSequence> adapterReminder;
+	
 	private long startMillis;
 	private long endMillis;
 	
 	private int classOrder;
 	private int weekDay;
-	private int reccur;
+	private int reminder;
 	
 	private int classStartHour;
 	private int classStartMin;
@@ -66,11 +68,6 @@ public class AddClassActivity extends SherlockActivity implements
 	private int sessionStartDay;
 	private int sessionStartMonth;
 	private int sessionStartYear;
-	
-	// recurrence flags
-	private static final int REC_WEEK = 0;
-	private static final int REC_SEMESTER = 1;
-	private static final int REC_YEAR = 2;
 	
 	// class flags
 	private static final int FIRST_CLASS = 0;
@@ -173,30 +170,42 @@ public class AddClassActivity extends SherlockActivity implements
 			}
 		});
 		
-		// set up the reccurence spinner
-//		this.spinnerReccur = (Spinner)findViewById(R.id.addClass_spinner_reccur);
-//		this.adapterReccur = ArrayAdapter.createFromResource(
-//				this, 
-//				R.array.reccur_array, 
-//				android.R.layout.simple_spinner_item
-//				);
-//		adapterReccur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//		spinnerReccur.setAdapter(adapterReccur);
-//		spinnerReccur.setOnItemSelectedListener(new OnItemSelectedListener() {
-//
-//			@Override
-//			public void onItemSelected(AdapterView<?> parent, View view,
-//					int position, long id) {
-//				// TODO Auto-generated method stub
-//				AddClassActivity.this.reccur = position;
-//			}
-//
-//			@Override
-//			public void onNothingSelected(AdapterView<?> arg0) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
+		// Set up reminder spinner
+		spinnerReminder = (Spinner)findViewById(R.id.addClass_spinner_reminder);
+		adapterReminder = ArrayAdapter.createFromResource(
+				this, R.array.reminder_array, 
+				android.R.layout.simple_spinner_item
+				);
+		adapterReminder.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerReminder.setAdapter(adapterReminder);
+		spinnerReminder.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+//				AddClassActivity.this.reminder = position;
+				switch (position) {
+				case 1:
+					AddClassActivity.this.reminder = 1;
+					break;
+				case 2:
+					AddClassActivity.this.reminder = 15;
+					break;
+				case 3:
+					AddClassActivity.this.reminder = 60;
+					break;
+				default:
+					AddClassActivity.this.reminder = 0;
+					break;
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}
+		});
 		
 		// Set up the start-week spinner
 		spinnerStartWeek = (Spinner)findViewById(R.id.addClass_spinner_classStartWeek);
@@ -316,17 +325,17 @@ public class AddClassActivity extends SherlockActivity implements
 			String rrule = "FREQ=WEEKLY;COUNT=" + (endWeek - startWeek + 1);
 			cv.put(Events.RRULE, rrule);
 			
-			new MyAsyncQeuryHandler(getContentResolver())
-				.startInsert(
+			MyAsyncQeuryHandler handler = new MyAsyncQeuryHandler(getContentResolver());
+			handler.startInsert(
 						1, 
 						null, 
 						Events.URI, 
-						cv);
+						cv
+					);
 			
 			Toast.makeText(this, 
 					" ClassName " + className +
 					" classOrder: " + classOrder + 
-					" reccurence " + reccur + 
 					" weekDay " + weekDay +
 					" startWeek " + startWeek +
 					" endWeek " + endWeek +
@@ -348,6 +357,16 @@ public class AddClassActivity extends SherlockActivity implements
 		protected void onInsertComplete(int token, Object cookie, Uri uri) {
 			// TODO navigate back to the calendar activity
 			super.onInsertComplete(token, cookie, uri);
+			reminder = AddClassActivity.this.reminder;
+			if (reminder != 0) {
+				long eventId = ContentUris.parseId(uri);
+				ContentValues cv = new ContentValues();
+				cv.put(Reminders.EVENT_ID, eventId);
+				cv.put(Reminders.MINUTES, reminder);
+				cv.put(Reminders.METHOD, Reminders.METHOD_DEFAULT);
+				AddClassActivity.this.getContentResolver()
+					.insert(Reminders.URI, cv);
+			}
 		}
 	}
 }
