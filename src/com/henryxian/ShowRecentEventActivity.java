@@ -26,6 +26,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.henryxian.EventContract.EventEntry;
+import com.henryxian.GCalendarContract.Events;
 
 public class ShowRecentEventActivity extends SherlockListActivity{
 	private static final String TAG = ShowRecentEventActivity.class.getSimpleName();
@@ -56,10 +57,10 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 		Uri uri = Uri.parse("content://com.android.calendar/events");
 		String[] projection = 
 				new String[] {
-				"_id",
-				"title",
-				"dtstart",
-				"description"
+				Events._ID,
+				Events.TITLE,
+				Events.DTSTART,
+				Events.DESCRIPTION
 		};
 		
 		String[] dataColumns = new String[]{
@@ -105,11 +106,11 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				long timestamp;
 				// TODO Auto-generated method stub
 				ViewHolder holder = (ViewHolder)view.getTag();
-				title = cursor.getString(cursor.getColumnIndex("title"));
+				title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
 				Log.d(TAG, "this is the title: " + title);
-				description =  cursor.getString(cursor.getColumnIndex("description"));
+				description =  cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
 				Log.d(TAG, "this is the description: " + description);
-				timestamp = cursor.getLong(cursor.getColumnIndex("dtstart"));
+				timestamp = cursor.getLong(cursor.getColumnIndex(Events.DTSTART));
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(timestamp);
 				String time = cal.get(Calendar.YEAR) + "-" 

@@ -1,8 +1,15 @@
 package com.henryxian;
 
-import java.util.Calendar;
-
+import android.app.AlertDialog;
+import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -49,6 +56,13 @@ public class AddClassActivity extends SherlockActivity implements
 	private int startWeek;
 	private int endWeek;
 	
+	// The start day of session, 
+	// set in the sharepreference
+	private String sessionStartDate;
+	private int sessionStartDay;
+	private int sessionStartMonth;
+	private int sessionStartYear;
+	
 	// recurrence flags
 	private static final int REC_WEEK = 0;
 	private static final int REC_SEMESTER = 1;
@@ -63,19 +77,19 @@ public class AddClassActivity extends SherlockActivity implements
 	
 	protected void setClass(int position) {
 		switch(position) {
-		case 0:
+		case FIRST_CLASS:
 			setClassHourMin(8, 30, 10, 5);
 			break;
-		case 1:
+		case SECOND_CLASS:
 			setClassHourMin(10, 25, 12, 0);
 			break;
-		case 2:
+		case THIRD_CLASS:
 			setClassHourMin(13, 50, 15, 25);
 			break;
-		case 3:
+		case FOURTH_CLASS:
 			setClassHourMin(15, 45, 17, 20);
 			break;
-		case 4:
+		case FIFTH_CLASS:
 			setClassHourMin(18, 20, 21, 0);
 			break;
 		default:
@@ -94,12 +108,19 @@ public class AddClassActivity extends SherlockActivity implements
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_class);
 		
-		this.editTextClassName = (EditText)findViewById(R.id.addClass_editText_className);
+		// Set first class to default
+		setClass(0);
+		// set the session start day from the preference
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		sessionStartDate = sharedPreferences.getString("DatePreference", "2013-2-23");
+		sessionStartDay = DatePickerPreference.getDay(sessionStartDate);
+		sessionStartMonth = DatePickerPreference.getMonth(sessionStartDate);
+		sessionStartYear = DatePickerPreference.getYear(sessionStartDate);
 		
+		this.editTextClassName = (EditText)findViewById(R.id.addClass_editText_className);
 		// set up the class order spinner
 		 this.spinnerClassOrder = (Spinner)findViewById(R.id.addClass_spinner_classOrder);
 		 this.adapterClassOrder = ArrayAdapter.createFromResource(
@@ -139,41 +160,39 @@ public class AddClassActivity extends SherlockActivity implements
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO Auto-generated method stub
 				AddClassActivity.this.weekDay = position;
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
 		
 		// set up the reccurence spinner
-		this.spinnerReccur = (Spinner)findViewById(R.id.addClass_spinner_reccur);
-		this.adapterReccur = ArrayAdapter.createFromResource(
-				this, 
-				R.array.reccur_array, 
-				android.R.layout.simple_spinner_item
-				);
-		adapterReccur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerReccur.setAdapter(adapterReccur);
-		spinnerReccur.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				AddClassActivity.this.reccur = position;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+//		this.spinnerReccur = (Spinner)findViewById(R.id.addClass_spinner_reccur);
+//		this.adapterReccur = ArrayAdapter.createFromResource(
+//				this, 
+//				R.array.reccur_array, 
+//				android.R.layout.simple_spinner_item
+//				);
+//		adapterReccur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		spinnerReccur.setAdapter(adapterReccur);
+//		spinnerReccur.setOnItemSelectedListener(new OnItemSelectedListener() {
+//
+//			@Override
+//			public void onItemSelected(AdapterView<?> parent, View view,
+//					int position, long id) {
+//				// TODO Auto-generated method stub
+//				AddClassActivity.this.reccur = position;
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 		
 		// Set up the start-week spinner
 		spinnerStartWeek = (Spinner)findViewById(R.id.addClass_spinner_classStartWeek);
@@ -238,16 +257,55 @@ public class AddClassActivity extends SherlockActivity implements
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
-	}
+	}	
 	
 	public void confirmAddClass(View view) {
 		String className = editTextClassName.getText().toString();
-		Toast.makeText(this, 
-				" ClassName " + className +
-				" classOrder: " + classOrder + 
-				" reccurence " + reccur + 
-				" weekDay " + weekDay,
-				Toast.LENGTH_SHORT).show();
+		if (className.length() == 0) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			if (startWeek > endWeek) {
+				builder.setMessage(R.string.addClass_alertDialog_messageOutOfEndWeek);
+			} else {
+				builder.setMessage(R.string.addClass_alertDialog_messageClassNull);
+			}
+			builder.setTitle(R.string.addClass_alertDialog_title)
+				.setPositiveButton(R.string.addClass_alertDialog_dismiss, new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				}).show();
+		}
+		else {
+			// TODO insert class
+			ContentValues cv = new ContentValues();
+			
+			Toast.makeText(this, 
+					" ClassName " + className +
+					" classOrder: " + classOrder + 
+					" reccurence " + reccur + 
+					" weekDay " + weekDay +
+					" startWeek " + startWeek +
+					" endWeek " + endWeek +
+					" startHour " + classStartHour +
+					" startMin " + classStartMin +
+					" endHour " + classEndHour +
+					" endMin " + classEndMin,
+					Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	private final class MyAsyncQeuryHandler extends AsyncQueryHandler {
+		public MyAsyncQeuryHandler(ContentResolver contentResolver) {
+			// TODO Auto-generated constructor stub
+			super(contentResolver);
+		}
 		
+		@Override
+		protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			// TODO navigate back to the calendar activity
+			super.onInsertComplete(token, cookie, uri);
+		}
 	}
 }

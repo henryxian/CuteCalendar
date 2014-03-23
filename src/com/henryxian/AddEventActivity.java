@@ -303,6 +303,9 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 				cv.put("dtstart", startMillis);
 				cv.put("description", mEditTextContent.getText().toString());
 				cv.put("title", mEditTextTitle.getText().toString());
+				// TODO rrule
+				String rrule = reccur == 0 ? "FREQ=WEEKLY" : "FREQ=MONTHLY";
+				cv.put("rrule", rrule);
 				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
 				myAsyncQueryHandler.startInsert(
 						0, 
