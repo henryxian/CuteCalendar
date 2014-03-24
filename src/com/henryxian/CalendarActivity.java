@@ -230,7 +230,6 @@ public class CalendarActivity extends SherlockFragmentActivity {
 				String[] projection = {
 						Instances.EVENT_ID,
 						Instances.BEGIN,
-						Events.TITLE
 						};
 				ContentResolver cr = getContentResolver();
 				Cursor cursor = cr.query(
