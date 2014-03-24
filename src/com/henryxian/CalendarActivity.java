@@ -39,7 +39,6 @@ public class CalendarActivity extends SherlockFragmentActivity {
 	private SchoolWeekCalFragment schoolWeekCalFragment;
 	private ActionMode mActionMode;
 	
-	//TODO
 	private void setDateColor(Date date, int count) {
 		if (count == 1) {
 			schoolWeekCalFragment.setBackgroundResourceForDate(R.color.free, date);
@@ -106,9 +105,9 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		schoolWeekCalFragment = new SchoolWeekCalFragment();
 		
-		Uri uri = Uri.parse("content://" + EventProvider.AUTHORITY + "/events/counts");		
-		MyAsyncQueryHandler handler = new MyAsyncQueryHandler(this.getContentResolver());
-		handler.startQuery(0, null, uri, null, null, null, null);
+//		Uri uri = Uri.parse("content://" + EventProvider.AUTHORITY + "/events/counts");		
+//		MyAsyncQueryHandler handler = new MyAsyncQueryHandler(this.getContentResolver());
+//		handler.startQuery(0, null, uri, null, null, null, null);
 		
 		setContentView(R.layout.activity_calendar);
 
@@ -194,16 +193,19 @@ public class CalendarActivity extends SherlockFragmentActivity {
 
 		// Setup listener
 		final CaldroidListener listener = new CaldroidListener() {
-			//TODO add some logic here
 			@Override
 			public void onSelectDate(Date date, View view) {
 				Toast.makeText(getApplicationContext(), "work",
 						Toast.LENGTH_SHORT).show();
+				// TODO
 			}
 			
+			/*
+			 * When the month changes, load the instances from the calendar
+			 * and refresh the view.
+			 */
 			@Override
 			public void onChangeMonth(int month, int year) {
-				// TODO Auto-generated method stub
 //				Toast.makeText(CalendarActivity.this, " " + month + " " + year, Toast.LENGTH_SHORT).show();
 				Calendar beginTime = Calendar.getInstance();
 				beginTime.set(year, month - 1 , 1, 0, 0);
@@ -248,10 +250,10 @@ public class CalendarActivity extends SherlockFragmentActivity {
 					}
 					count.put(date, value);
 					
-					SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-					Log.d(TAG, "cursor: " + cursor.getLong(0)
-							+ " " + formatter.format(begin.getTime())
-							+ " " + cursor.getString(2));
+//					SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//					Log.d(TAG, "cursor: " + cursor.getLong(0)
+//							+ " " + formatter.format(begin.getTime())
+//							+ " " + cursor.getString(2));
 				}
 				cursor.close();
 				HashMap<String, Object> extraData = new HashMap<String, Object>();
@@ -260,6 +262,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 				
 				CalendarActivity.this.schoolWeekCalFragment.refreshView();
 			}
+			
 			/*
 			 * when long click the date cell, send the selected date
 			 * to the add-event activity and redirect.

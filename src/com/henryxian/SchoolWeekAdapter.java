@@ -164,14 +164,16 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		}
 		@SuppressWarnings("unchecked")
 		HashMap<String, Integer> countForDateMap = (HashMap<String, Integer>)extraData.get("count");
-		Iterator<Entry<String, Integer>> iter = countForDateMap.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>)iter.next();
-			Log.d(TAG, "Date: " + entry.getKey()); 
-			Log.d(TAG, "count: " + entry.getValue());
-		}
+//		Iterator<Entry<String, Integer>> iter = countForDateMap.entrySet().iterator();
+//		while (iter.hasNext()) {
+//			Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>)iter.next();
+//			Log.d(TAG, "Date: " + entry.getKey()); 
+//			Log.d(TAG, "count: " + entry.getValue());
+//		}
 		String today = year + "-" + month + "-" + day;
 		Integer occurences = countForDateMap.get(today);
+		// If the occurences is not zero, 
+		// then set the corresponding color.
 		if (occurences != null) {
 			cellView.setBackgroundResource(SchoolCalHelper.getBusyColor(occurences));
 		}
