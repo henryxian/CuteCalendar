@@ -227,7 +227,11 @@ public class CalendarActivity extends SherlockFragmentActivity {
 				ContentUris.appendId(builder, startMillis);
 				ContentUris.appendId(builder, endMillis);
 				
-				String[] projection = {Instances.EVENT_ID,Instances.BEGIN,"title"};
+				String[] projection = {
+						Instances.EVENT_ID,
+						Instances.BEGIN,
+						Events.TITLE
+						};
 				ContentResolver cr = getContentResolver();
 				Cursor cursor = cr.query(
 							builder.build(), 
