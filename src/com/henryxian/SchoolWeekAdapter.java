@@ -79,7 +79,7 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		int offset = weekOfYear - firstSchoolWeek + 1;
 //		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 		
-		if (dayOfWeek == 1 && offset > 0 && offset < 21) {
+		if (dayOfWeek == 1 && offset > 0 && offset < 21 && dateTime.getMonth() == this.month) {
 			tv3.setText(String.valueOf(weekOfYear));
 			tv3.setBackgroundColor(resources.getColor(R.color.xian_yellow));
 			tv2.setText(String.valueOf(offset));
