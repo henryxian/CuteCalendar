@@ -41,7 +41,10 @@ public final class GCalendarContract {
 	}
 	
 	public static abstract class Instances {
-		public static final Uri URI = Uri.parse("content://com.android.calendar/instances");
+		public static final Uri CONTENT_URI = Uri.parse("content://com.android.calendar/instances/when");
+		public static final Uri CONTENT_BY_DAY_URI = Uri.parse("content://com.android.calendar/instances/whenbyday");
+		public static final Uri CONTENT_SEARCH_BY_DAY_URI = Uri.parse("content://com.android.calendar/instances/searchbyday");
+		public static final Uri CONTENT_SEARCH_URI = Uri.parse("content://com.android.calendar/instances/search");
 		
 		public static final String EVENT_ID = "event_id";
 		public static final String BEGIN = "begin";

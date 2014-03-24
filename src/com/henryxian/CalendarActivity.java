@@ -2,11 +2,14 @@ package com.henryxian;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -26,6 +29,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.henryxian.GCalendarContract.Events;
+import com.henryxian.GCalendarContract.Instances;
 import com.roomorama.caldroid.CaldroidListener;
 
 public class CalendarActivity extends SherlockFragmentActivity {
@@ -196,6 +201,65 @@ public class CalendarActivity extends SherlockFragmentActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 			
+			@Override
+			public void onChangeMonth(int month, int year) {
+				// TODO Auto-generated method stub
+//				Toast.makeText(CalendarActivity.this, " " + month + " " + year, Toast.LENGTH_SHORT).show();
+				Calendar beginTime = Calendar.getInstance();
+				beginTime.set(year, month - 1 , 1, 0, 0);
+				long startMillis = beginTime.getTimeInMillis();
+				int maxDay = beginTime.getActualMaximum(Calendar.DAY_OF_MONTH);
+				Log.d(TAG, beginTime.getTime().toString());
+				
+				Calendar endTime = Calendar.getInstance();
+				endTime.set(year, month - 1, maxDay, 23, 59);
+				long endMillis = endTime.getTimeInMillis();
+				Log.d(TAG, endTime.getTime().toString());
+				
+				Uri.Builder builder = Instances.CONTENT_URI.buildUpon();
+				ContentUris.appendId(builder, startMillis);
+				ContentUris.appendId(builder, endMillis);
+				
+				String[] projection = {Instances.EVENT_ID,Instances.BEGIN,"title"};
+				ContentResolver cr = getContentResolver();
+				Cursor cursor = cr.query(
+							builder.build(), 
+							projection, 
+							null, 
+							null, 
+							null
+						);
+				
+				HashMap<String, Integer> count = new HashMap<String, Integer>();
+				
+				while (cursor.moveToNext()) {
+					Calendar begin = Calendar.getInstance();
+					begin.setTimeInMillis(cursor.getLong(1));
+					String date = begin.get(
+							Calendar.YEAR) + "-" + 
+							(begin.get(Calendar.MONTH) + 1) + "-" + 
+							begin.get(Calendar.DAY_OF_MONTH
+						);
+					Integer value = count.get(date);
+					if (value == null){
+						value = 1;
+					} else {
+						value++;
+					}
+					count.put(date, value);
+					
+					SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+					Log.d(TAG, "cursor: " + cursor.getLong(0)
+							+ " " + formatter.format(begin.getTime())
+							+ " " + cursor.getString(2));
+				}
+				cursor.close();
+				HashMap<String, Object> extraData = new HashMap<String, Object>();
+				extraData.put("count", count);
+				CalendarActivity.this.schoolWeekCalFragment.setExtraData(extraData);
+				
+				CalendarActivity.this.schoolWeekCalFragment.refreshView();
+			}
 			/*
 			 * when long click the date cell, send the selected date
 			 * to the add-event activity and redirect.

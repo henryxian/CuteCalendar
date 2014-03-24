@@ -43,4 +43,17 @@ public class SchoolCalHelper {
 		
 		return result;
 	}
+	
+	// Return the color depending on the count
+	public static int getBusyColor(int count) {
+		if (count == 1) {
+			return R.color.free;
+		} else if (count == 2) {
+			return R.color.not_very_busy;
+		} else if (count == 3) {
+			return R.color.medium_busy;
+		} else {
+			return R.color.busy;
+		}
+	}
 }

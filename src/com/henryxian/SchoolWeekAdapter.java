@@ -5,10 +5,14 @@ import hirondelle.date4j.DateTime;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +22,8 @@ import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidGridAdapter;
 
 public class SchoolWeekAdapter extends CaldroidGridAdapter {
-		
+	private static final String TAG = "SchoolWeekAdapter";	
+	
 	public SchoolWeekAdapter(Context context, int month, int year,
 			HashMap<String, Object> caldroidData,
 			HashMap<String, Object> extraData) {
@@ -148,6 +153,7 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		}
 		
 		// TODO
+		@SuppressWarnings("unchecked")
 		HashMap<DateTime, Integer> backgroundForDateTimeMap = 
 				(HashMap<DateTime, Integer>) caldroidData.get(CaldroidFragment._BACKGROUND_FOR_DATETIME_MAP);
 		if (backgroundForDateTimeMap != null) {
@@ -156,7 +162,20 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 				cellView.setBackgroundResource(backgroundResource.intValue());
 			}
 		}
-
+		@SuppressWarnings("unchecked")
+		HashMap<String, Integer> countForDateMap = (HashMap<String, Integer>)extraData.get("count");
+		Iterator<Entry<String, Integer>> iter = countForDateMap.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>)iter.next();
+			Log.d(TAG, "Date: " + entry.getKey()); 
+			Log.d(TAG, "count: " + entry.getValue());
+		}
+		String today = year + "-" + month + "-" + day;
+		Integer occurences = countForDateMap.get(today);
+		if (occurences != null) {
+			cellView.setBackgroundResource(SchoolCalHelper.getBusyColor(occurences));
+		}
+		
 		tv1.setText("" + dateTime.getDay());
 		
 //		tv2.setText("Hi");
