@@ -174,10 +174,11 @@ public class SchoolWeekAdapter extends CaldroidGridAdapter {
 		Integer occurences = countForDateMap.get(today);
 		// If the occurences is not zero, 
 		// then set the corresponding color.
-		if (occurences != null) {
-			cellView.setBackgroundResource(SchoolCalHelper.getBusyColor(occurences));
+		if (dateTime.gteq(minDateTime) && dateTime.lteq(maxDateTime)) {
+			if (occurences != null) {
+				cellView.setBackgroundResource(SchoolCalHelper.getBusyColor(occurences));
+			}
 		}
-		
 		tv1.setText("" + dateTime.getDay());
 		
 //		tv2.setText("Hi");
