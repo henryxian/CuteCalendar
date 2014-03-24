@@ -151,7 +151,8 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			
 			// set the displayed month and year on fresh
 			args.putInt(SchoolWeekCalFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-			args.putInt(SchoolWeekCalFragment.YEAR, cal.get(Calendar.YEAR));	
+			args.putInt(SchoolWeekCalFragment.YEAR, cal.get(Calendar.YEAR));
+			args.putInt(SchoolWeekCalFragment.START_DAY_OF_WEEK, SchoolWeekCalFragment.MONDAY);
 			
 			// some other custom settings
 			args.putBoolean(SchoolWeekCalFragment.ENABLE_SWIPE, true);
@@ -198,6 +199,10 @@ public class CalendarActivity extends SherlockFragmentActivity {
 				Toast.makeText(getApplicationContext(), "work",
 						Toast.LENGTH_SHORT).show();
 				// TODO
+//				Intent intent = new Intent(CalendarActivity.this, );
+//				intent.putExtra("year", date.getYear());
+//				intent.putExtra("month", date.getMonth());
+//				intent.putExtra("day", date.getDay());
 			}
 			
 			/*
@@ -264,7 +269,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			}
 			
 			/*
-			 * when long click the date cell, send the selected date
+			 * When long click the date cell, send the selected date
 			 * to the add-event activity and redirect.
 			 */
 			@Override
