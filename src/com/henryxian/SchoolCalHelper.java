@@ -9,8 +9,11 @@ import android.util.Log;
  */
 public class SchoolCalHelper {
 	private static final String TAG = "SchoolCalHelper";
-	// Calculate the day of week which starts
-	// from Monday
+	
+	/*
+	 * Calculate the day of week which starts 
+	 * from Monday.
+	 */
 	public static int dayOfWeek(int day) {
 		day = day - 1;
 		day = day == 0 ? 7 : day;
@@ -21,6 +24,9 @@ public class SchoolCalHelper {
 		return dayOfWeek(day) - 1;
 	}
 	
+	/* 
+	 * Calculate the school calendar date of a specifed date.
+	 */
 	public static int[] getSchoolCalDate(int year, int month, int day, int week, int dayOfWeek) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month - 1, day);
@@ -44,7 +50,9 @@ public class SchoolCalHelper {
 		return result;
 	}
 	
-	// Return the color depending on the count
+	 /*
+	  * Return the color depending on the count.
+	  */
 	public static int getBusyColor(int count) {
 		if (count == 1) {
 			return R.color.free;

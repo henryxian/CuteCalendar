@@ -160,7 +160,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			
 			schoolWeekCalFragment.setArguments(args);
 			
-			// set the start date of week retrieved from
+			// Set the start date of week retrieved from
 			// the shared preference
 			cal.set(year, month, day);
 			
@@ -202,7 +202,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			
 			/*
 			 * When the month changes, load the instances from the calendar
-			 * and refresh the view.
+			 * of the month switched to and refresh the view.
 			 */
 			@Override
 			public void onChangeMonth(int month, int year) {
