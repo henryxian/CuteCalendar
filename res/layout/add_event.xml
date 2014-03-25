@@ -98,15 +98,26 @@
         />
 	
 	<TextView
-	    android:id="@+id/text_time"
+	    android:id="@+id/addEvent_text_startTime"
 	    android:layout_height="wrap_content"
 	    android:layout_width="match_parent"
 	    android:textAppearance="?android:attr/textAppearanceLarge"
-	    android:text="@string/addEvent_text_time" 
+	    android:text="@string/addEvent_text_startTime" 
 	    android:clickable="true"
-	    android:onClick="showTimePickerDialog"
+	    android:onClick="showStartTimePickerDialog"
 	    android:gravity="center"
 	    />
+	
+	<TextView
+	    android:id="@+id/addEvent_text_endTime"
+	    android:layout_height="wrap_content"
+	  	android:layout_width="match_parent"
+	    android:textAppearance="?android:attr/textAppearanceLarge"
+	    android:text="@string/addEvent_text_endTime" 
+	    android:clickable="true"
+	    android:onClick="showEndTimePickerDialog"
+	    android:gravity="center" 
+		/>
 	
 	<Button
 	    android:id="@+id/button_add_positive"

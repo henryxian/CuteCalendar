@@ -60,8 +60,11 @@
     
     <string name="addEvent_text_reccur">循環發生</string>
     <string name="addEvent_text_reminder">提醒</string>
-    <string name="addEvent_text_time">時間</string>
-    
+    <string name="addEvent_text_startTime"> 开始時間 </string>
+    <string name="addEvent_text_endTime"> 结束时间 </string>
+    <string name="addEvent_alertDialog_wrongDuration_title">警告</string>
+    <string name="addEvent_alertDialog_wrongDuration_message">开始时间不能少于结束时间</string>
+    <string name="addEvent_alertDialog_wrongDuration_positive">确定</string>
     <string name="settings_reminder_title">提醒方式</string>
     <string name="settings_reminder_summary">設置你的日曆提醒方式</string>
     <string name="settings_reminder_dialogTitle">提醒方式</string>

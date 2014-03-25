@@ -1,5 +1,6 @@
 package com.henryxian;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.AlertDialog;
@@ -10,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -38,13 +40,17 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	private static String date;
 	private MyAsyncQueryHandler myAsyncQueryHandler;
 	private TextView mTextDate;
-	private TextView mTextTime;
+	private TextView mTextStartTime;
+	private TextView mTextEndTime;
 	private EditText mEditTextTitle;
 	private EditText mEditTextContent;
 	private Button button;
-	private TimePickerFragment fragment;
-	private int dialogHour;
-	private int dialogMinute;
+	private TimePickerFragment startTimePicker;
+	private TimePickerFragment endTimePicker;
+	private int startHour;
+	private int startMinute;
+	private int endHour;
+	private int endMinute;
 	private int day;
 	private int month;
 	private int year;
@@ -57,14 +63,6 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	
 	private int reminder;
 	private int reccur;
-	
-	public void setDialogHour(int hour) {
-		this.dialogHour = hour;
-	}
-	
-	public void setDialogMinute(int minute) {
-		this.dialogMinute = minute;
-	}
 	
 	public int getReminder() {
 		return reminder;
@@ -137,14 +135,16 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		Bundle bundle = intent.getExtras();
 		
 		mTextDate = (TextView)findViewById(R.id.text_date);
-		mTextTime = (TextView)findViewById(R.id.text_time);
+		mTextStartTime = (TextView)findViewById(R.id.addEvent_text_startTime);
+		mTextEndTime = (TextView)findViewById(R.id.addEvent_text_endTime);
 		
 		if (bundle != null){
 			date = bundle.getString("Date");
 			
 			// parse the date passing from the intent
 			day = DatePickerPreference.getDay(date);
-			month = DatePickerPreference.getMonth(date);
+			// NOTICE here
+			month = DatePickerPreference.getMonth(date) - 1;
 			year = DatePickerPreference.getYear(date);
 			
 			if (date != null){
@@ -160,11 +160,14 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		} else {
 			Calendar cal = Calendar.getInstance();
 			year = cal.get(Calendar.YEAR);
+			// NOTICE here
 			month = cal.get(Calendar.MONTH);
 			day = cal.get(Calendar.DAY_OF_MONTH);
-			dialogHour = cal.get(Calendar.HOUR_OF_DAY);
-			dialogMinute = cal.get(Calendar.MINUTE);
-			
+			startHour = cal.get(Calendar.HOUR_OF_DAY);
+			startMinute = cal.get(Calendar.MINUTE);
+			endHour = startHour;
+			endMinute = startMinute;
+//			
 			String month2;
 			String day2;
 			if (month < 9) {
@@ -181,7 +184,8 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			
 			date = year + "-" + month2 + "-" + day2;
 			mTextDate.setText(date);
-			mTextTime.setText("•rég£º " + dialogHour + ":" + dialogMinute);
+//			mTextStartTime.setText(getResources().getString(R.string.addEvent_text_startTime)
+//					+ " " + startHour + ":" + startMinute);
 		}
 	}
 	
@@ -260,13 +264,25 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		}
 	}
 	
-	public void showTimePickerDialog(View v) {
+	public void showStartTimePickerDialog(View v) {
 //		Toast.makeText(this, "onclicktime", 1).show();
-		if (fragment == null) {
-			fragment = new TimePickerFragment();
+		if (startTimePicker == null) {
+			startTimePicker = new TimePickerFragment();
+			Bundle bundle = new Bundle();
+			bundle.putInt("flag", 1);
+			startTimePicker.setArguments(bundle);
 		}
-		fragment.show(getSupportFragmentManager(), "timepicker");
-		
+		startTimePicker.show(getSupportFragmentManager(), "starttimepicker");
+	}
+	
+	public void showEndTimePickerDialog(View v) {
+		if (endTimePicker == null) {
+			endTimePicker = new TimePickerFragment();
+			Bundle bunble = new Bundle();
+			bunble.putInt("flag", 0);
+			endTimePicker.setArguments(bunble);
+		}
+		endTimePicker.show(getSupportFragmentManager(), "endtimepicker");
 	}
 	
 	private final class okButtonListener implements OnClickListener {
@@ -277,7 +293,6 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			ContentValues cv = new ContentValues();
 			mEditTextTitle = (EditText)findViewById(R.id.edit_event_title);
 			mEditTextContent = (EditText)findViewById(R.id.edit_event_content);
-			Uri uri = Uri.parse("content://com.android.calendar/events");
 			
 			if (mEditTextTitle.getText().length() == 0) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(AddEventActivity.this);
@@ -292,27 +307,45 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 							dialog.dismiss();
 						}
 					}).show();
+			} else if ((endHour < startHour) || (endHour == startHour && endMinute < startMinute)) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(AddEventActivity.this);
+				builder.setTitle(R.string.addEvent_alertDialog_wrongDuration_title)
+					.setMessage(R.string.addEvent_alertDialog_wrongDuration_message)
+					.setPositiveButton(R.string.addEvent_alertDialog_wrongDuration_positive, 
+							new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							dialog.dismiss();
+						}
+					}).show();
 			} else {
 				long calId = 1;
 				long startMillis = 0;
 				// TODO endmillis insert
 				// TODO add recurrence rule
 				long endMillis = 0;
-				Calendar cal = Calendar.getInstance();
-				cal.set(year, month, day, dialogHour, dialogMinute);
-				startMillis = cal.getTimeInMillis();
+				Calendar calStart = Calendar.getInstance();
+				Calendar calEnd = Calendar.getInstance();
+				calStart.set(year, month, day, startHour, startMinute);
+				calEnd.set(year, month, day, endHour, endMinute);
+				startMillis = calStart.getTimeInMillis();
+				endMillis = calEnd.getTimeInMillis();
+				String rrule = reccur == 0 ? "FREQ=WEEKLY" : "FREQ=MONTHLY";
+				
 				cv.put(Events.CALENDAR_ID, calId);
 				cv.put(Events.DTSTART, startMillis);
+				cv.put(Events.DTEND, endMillis);
 				cv.put(Events.DESCRIPTION, mEditTextContent.getText().toString());
 				cv.put(Events.TITLE, mEditTextTitle.getText().toString());
 				// TODO rrule
-				String rrule = reccur == 0 ? "FREQ=WEEKLY" : "FREQ=MONTHLY";
 				cv.put(Events.RRULE, rrule);
 				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
 				myAsyncQueryHandler.startInsert(
 						0, 
 						null, 
-						uri, 
+						Events.URI, 
 						cv
 					);
 				Toast.makeText(AddEventActivity.this, "ok!", Toast.LENGTH_SHORT).show();
@@ -321,11 +354,27 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	}
 
 	@Override
-	public void onTimeChanged(int hour, int minute) {
+	public void onTimeChanged(int hour, int minute, int flag) {
 		// TODO Auto-generated method stub
-		dialogHour = hour;
-		dialogMinute = minute;
-		mTextTime.setText("•rég: " + dialogHour + ":" + dialogMinute); 
-//		Toast.makeText(this, String.valueOf(hour), Toast.LENGTH_SHORT).show();;
+		Resources res = getResources();
+		SimpleDateFormat formatter = new SimpleDateFormat("kk:mm");
+		if (flag == 1) {
+			startHour = hour;
+			Log.d(TAG, "startHour: " + startHour);
+			startMinute = minute;
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.HOUR_OF_DAY, startHour);
+			cal.set(Calendar.MINUTE, startMinute);
+			mTextStartTime.setText(res.getString(R.string.addEvent_text_startTime) 
+					+ formatter.format(cal.getTime()));
+		} else {
+			endHour = hour;
+			endMinute = minute;
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.HOUR_OF_DAY, endHour);
+			cal.set(Calendar.MINUTE, endMinute);
+			mTextEndTime.setText(res.getString(R.string.addEvent_text_endTime)
+					+ formatter.format(cal.getTime()));
+		}
 	}
 }
