@@ -1,9 +1,11 @@
 package com.henryxian;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,8 +14,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -46,8 +53,8 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 	
 	public static class CursorLoaderListFragment extends SherlockListFragment 
 			implements LoaderManager.LoaderCallbacks<Cursor> {
-	
-		private SimpleCursorAdapter mAdapter;
+		private static final String TAG = "CursorLoaderListFragment";
+		private CursorAdapter mAdapter;
 		private int year;
 		private int month;
 		private int day;
@@ -62,7 +69,7 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 			day = bundle.getInt("day");
 			month = bundle.getInt("month");
 			year = bundle.getInt("year");
-			Log.d("showfragment ",  "" + year);
+			Log.d(TAG,  "" + year);
 			
 			String[] from = {
 					Instances.BEGIN,
@@ -76,15 +83,40 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 					R.id.text_show_content
 				};
 			
-			mAdapter = new SimpleCursorAdapter(
-					getActivity(),
-					R.layout.event_item,
-//					android.R.layout.simple_list_item_2,
-					null, 
-					from, 
-					to,
-					0
-				);
+			mAdapter = new CursorAdapter(getActivity(), null) {
+				
+				@Override
+				public View newView(Context context, Cursor cursor, ViewGroup parent) {
+					// TODO Auto-generated method stub
+					LayoutInflater inflater = 
+							(LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
+					return inflater.inflate(R.layout.event_item, null);
+				}
+				
+				@Override
+				public void bindView(View view, Context context, Cursor cursor) {
+					// TODO Auto-generated method stub
+					String title;
+					String description;
+					long startTime;
+					
+					title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
+					description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
+					startTime = cursor.getLong(cursor.getColumnIndex(Instances.BEGIN));
+					
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(startTime);
+					SimpleDateFormat formatter = new SimpleDateFormat("kk:mm");
+					
+					TextView t1 = (TextView)view.findViewById(R.id.text_show_title);
+					TextView t2 = (TextView)view.findViewById(R.id.text_show_content);
+					TextView t3 = (TextView)view.findViewById(R.id.text_show_date);
+					
+					t1.setText(title);
+					t2.setText(description);
+					t3.setText(formatter.format(cal.getTime()));
+				}
+			};
 			
 			setListAdapter(mAdapter);
 			
@@ -92,7 +124,7 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 		}
 		
 		static final String[] projection = {
-			"_id",
+			Instances._ID,
 			Instances.BEGIN,
 			Events.TITLE,
 			Events.DESCRIPTION
