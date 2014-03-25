@@ -1,5 +1,6 @@
 package com.henryxian;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -113,17 +114,17 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 				timestamp = cursor.getLong(cursor.getColumnIndex(Events.DTSTART));
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(timestamp);
-				String time = cal.get(Calendar.YEAR) + "-" 
-						+ (cal.get(Calendar.MONTH) + 1) + "-" 
-						+ cal.get(Calendar.DAY_OF_MONTH);
-				
+//				String time = cal.get(Calendar.YEAR) + "-" 
+//						+ (cal.get(Calendar.MONTH) + 1) + "-" 
+//						+ cal.get(Calendar.DAY_OF_MONTH);
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				// set the Textviews in the cell to display content
 				TextView t1 = (TextView)view.findViewById(R.id.text_show_content);
 				TextView t2 = (TextView)view.findViewById(R.id.text_show_date);
 				TextView t3 = (TextView)view.findViewById(R.id.text_show_title);
 				Log.d(TAG, "t1: " + t1);
 				t1.setText(description);
-				t2.setText(time);
+				t2.setText(formatter.format(cal.getTime()));
 				t3.setText(title);
 			}
 
