@@ -66,4 +66,6 @@
     <string name="settings_reminder_summary">設置你的日曆提醒方式</string>
     <string name="settings_reminder_dialogTitle">提醒方式</string>
     
+    <string name="showDayEvent_label">当天事件</string>
+    
 </resources>

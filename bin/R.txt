@@ -314,7 +314,7 @@ int id abs__submit_area 0x7f08002f
 int id abs__textButton 0x7f080013
 int id abs__title 0x7f08001b
 int id abs__up 0x7f08000b
-int id action_settings 0x7f080056
+int id action_settings 0x7f080057
 int id addClass_button_ok 0x7f08003d
 int id addClass_editText_className 0x7f080037
 int id addClass_spinner_classEndWeek 0x7f08003c
@@ -344,6 +344,7 @@ int id listMode 0x7f080002
 int id months_infinite_pager 0x7f08004a
 int id normal 0x7f080001
 int id showCustom 0x7f080008
+int id showDayEvent_list 0x7f080056
 int id showHome 0x7f080005
 int id showTitle 0x7f080007
 int id show_dialog_button 0x7f080035
@@ -395,6 +396,7 @@ int layout main 0x7f03001c
 int layout schoolweek_cell 0x7f03001d
 int layout sherlock_spinner_dropdown_item 0x7f03001e
 int layout sherlock_spinner_item 0x7f03001f
+int layout show_day_event 0x7f030020
 int menu main 0x7f0d0000
 int menu settings 0x7f0d0001
 int string abs__action_bar_home_description 0x7f060001
@@ -450,6 +452,7 @@ int string pref_category_basic 0x7f060013
 int string settings_reminder_dialogTitle 0x7f06003e
 int string settings_reminder_summary 0x7f06003d
 int string settings_reminder_title 0x7f06003c
+int string showDayEvent_label 0x7f06003f
 int string text_add_positive 0x7f060026
 int string text_content 0x7f060025
 int string text_title 0x7f060024

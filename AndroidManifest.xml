@@ -60,6 +60,12 @@
                 android:value=".CalendarActivity" />
         </activity>
         
+        <activity
+            android:name=".ShowDayEventActivity"
+            android:label="@string/showDayEvent_label"
+            >
+        </activity>
+        
         <provider 
             android:name=".EventProvider"
             android:authorities="com.henryxian.EventProvider" 

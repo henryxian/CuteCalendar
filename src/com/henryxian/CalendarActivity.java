@@ -2,7 +2,6 @@ package com.henryxian;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.henryxian.GCalendarContract.Events;
 import com.henryxian.GCalendarContract.Instances;
 import com.roomorama.caldroid.CaldroidListener;
 
@@ -194,15 +192,20 @@ public class CalendarActivity extends SherlockFragmentActivity {
 
 		// Setup listener
 		final CaldroidListener listener = new CaldroidListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onSelectDate(Date date, View view) {
-				Toast.makeText(getApplicationContext(), "work",
-						Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getApplicationContext(), "work",
+//						Toast.LENGTH_SHORT).show();
 				// TODO
-//				Intent intent = new Intent(CalendarActivity.this, );
-//				intent.putExtra("year", date.getYear());
-//				intent.putExtra("month", date.getMonth());
-//				intent.putExtra("day", date.getDay());
+				Intent intent = new Intent(CalendarActivity.this, ShowDayEventActivity.class);
+				// getYear() returns the years since 1900
+				intent.putExtra("year", date.getYear() + 1900);
+				intent.putExtra("month", date.getMonth() + 1);
+				Log.d(TAG, "The passing month: " + date.getMonth());
+				intent.putExtra("day", date.getDate());
+				
+				startActivity(intent);
 			}
 			
 			/*
