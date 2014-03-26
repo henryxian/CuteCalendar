@@ -8,9 +8,11 @@ import android.content.AsyncQueryHandler;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -39,10 +41,21 @@ public class ShowAllEventsActivity extends SherlockFragmentActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(saveInstanceState);
 		
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		String date = sp.getString("DatePreference", "2013-2-23");
+		int year = DatePickerPreference.getYear(date);
+		int month = DatePickerPreference.getMonth(date);
+		int day = DatePickerPreference.getDay(date);
+		Bundle args = new Bundle();
+		args.putInt("year", year);
+		args.putInt("month", month);
+		args.putInt("day", day);
+		
 		FragmentManager fm = getSupportFragmentManager();
 		
 		if (fm.findFragmentById(android.R.id.content) == null) {
 			CursorLoaderListFragment list = new CursorLoaderListFragment();
+			list.setArguments(args);
 			fm.beginTransaction().add(android.R.id.content, list).commit();
 		}
 	}
@@ -93,7 +106,7 @@ public class ShowAllEventsActivity extends SherlockFragmentActivity {
 					
 					title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
 					description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
-					startTime = cursor.getLong(cursor.getColumnIndex(Events.DTSTART));
+					startTime = cursor.getLong(cursor.getColumnIndex(Instances.BEGIN));
 					
 					Calendar cal = Calendar.getInstance();
 					cal.setTimeInMillis(startTime);
@@ -116,7 +129,7 @@ public class ShowAllEventsActivity extends SherlockFragmentActivity {
 				public boolean onItemLongClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					Cursor c = (Cursor)parent.getItemAtPosition(position);
-					long eventId = c.getLong(c.getColumnIndex(Events._ID));
+					long eventId = c.getLong(c.getColumnIndex(Instances.EVENT_ID));
 					Uri deleteUri = ContentUris.withAppendedId(Events.URI, eventId);
 //					Toast.makeText(getActivity(), "id: " + eventId, Toast.LENGTH_SHORT).show();
 					new AsyncQueryHandler(getActivity().getContentResolver()) {
@@ -152,15 +165,15 @@ public class ShowAllEventsActivity extends SherlockFragmentActivity {
 				Long.toString(calendarId)
 		};
 		
-		static final String sortOrder = "dtstart DESC";
+		static final String sortOrder = Instances.BEGIN + " DESC";
 		
-		static final Uri uri = Events.URI;
 		static final String[] projection = 
 						new String[] {
-						Events._ID,
+						Instances._ID,
+						Instances.EVENT_ID,
 						Events.TITLE,
-						Events.DTSTART,
-						Events.DESCRIPTION
+						Events.DESCRIPTION,
+						Instances.BEGIN
 				};
 				
 		@Override
@@ -177,21 +190,30 @@ public class ShowAllEventsActivity extends SherlockFragmentActivity {
 		public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 			Uri baseUri = Instances.CONTENT_URI;
 			Uri.Builder builder = baseUri.buildUpon();
-			Calendar startTime = Calendar.getInstance();
-			Calendar endTime = Calendar.getInstance();
-			startTime.set(year, month - 1, day, 0, 0);
-			Log.d("showfragment ", startTime.toString());
-			endTime.set(year, month - 1, day, 23, 59);
-			Log.d("showfragment ", endTime.toString());
-			ContentUris.appendId(builder, startTime.getTimeInMillis());
-			ContentUris.appendId(builder, endTime.getTimeInMillis());
+			
+			Bundle date = getArguments();
+			int year = date.getInt("year");
+			int month = date.getInt("month") - 1;
+			int day = date.getInt("day");
+			Calendar calStart = Calendar.getInstance();
+			calStart.set(year, month, day, 0, 0);
+			int dayOfWeek = calStart.get(Calendar.DAY_OF_WEEK);
+			calStart.add(Calendar.DATE, - SchoolCalHelper.offset(dayOfWeek));
+			Calendar calEnd = (Calendar)calStart.clone();
+			calEnd.add(Calendar.DATE, 139);
+			calEnd.set(Calendar.HOUR_OF_DAY, 23);
+			calEnd.set(Calendar.MINUTE, 59);
+			Log.d(TAG, "calStart: " + calStart.toString());
+			Log.d(TAG, "calEnd: " + calEnd.toString());
+			ContentUris.appendId(builder, calStart.getTimeInMillis());
+			ContentUris.appendId(builder, calEnd.getTimeInMillis());
 			
 			return new CursorLoader(
 					getActivity(), 
-					uri,
+					builder.build(),
 					projection, 
-					selection, 
-					selectionArgs,
+					null, 
+					null,
 					sortOrder
 				);
 		}

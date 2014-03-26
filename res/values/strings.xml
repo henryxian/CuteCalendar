@@ -37,7 +37,7 @@
     <string name="text_content">事件詳情</string>
     <string name="text_add_positive">確定</string>
     
-    <string name="button_show_events">事件列表</string>
+    <string name="button_show_events">學期事件</string>
     <string name="button_add_class">添加課程</string>
     
     <string name="alertdialog_title">警告</string>
