@@ -457,6 +457,7 @@ int string pref_category_basic 0x7f060013
 int string settings_reminder_dialogTitle 0x7f060042
 int string settings_reminder_summary 0x7f060041
 int string settings_reminder_title 0x7f060040
+int string showDayEVent_deleteFinished 0x7f060044
 int string showDayEvent_label 0x7f060043
 int string text_add_positive 0x7f060026
 int string text_content 0x7f060025

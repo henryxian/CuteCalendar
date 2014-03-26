@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
+import android.content.AsyncQueryHandler;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +16,15 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -119,16 +123,53 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 			};
 			
 			setListAdapter(mAdapter);
+			getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Cursor c = (Cursor)parent.getItemAtPosition(position);
+					long eventId = c.getLong(c.getColumnIndex(Instances.EVENT_ID));
+					Uri deleteUri = ContentUris.withAppendedId(Events.URI, eventId);
+//					Toast.makeText(getActivity(), "id: " + eventId, Toast.LENGTH_SHORT).show();
+					new AsyncQueryHandler(getActivity().getContentResolver()) {
+						@Override
+						protected void onDeleteComplete(int token, Object cookie,
+								int result) {
+							// TODO Auto-generated method stub
+							super.onDeleteComplete(token, cookie, result);
+							
+							Toast.makeText(getActivity(), R.string.showDayEVent_deleteFinished, Toast.LENGTH_SHORT).show();
+						}
+					}.startDelete(
+							4, 
+							null, 
+							deleteUri, 
+							null, 
+							null
+						);
+					CursorLoaderListFragment fragment = CursorLoaderListFragment.this;
+					fragment.getLoaderManager().restartLoader(0, null, fragment);
+					
+					return true;
+				}
+			});
 			
 			getLoaderManager().initLoader(0, null, this);
 		}
-		
+	
 		static final String[] projection = {
 			Instances._ID,
+			Instances.EVENT_ID,
 			Instances.BEGIN,
 			Events.TITLE,
 			Events.DESCRIPTION
 		};
+		
+		@Override
+		public void onListItemClick(ListView l, View v, int position, long id) {
+			// TODO
+		}
 		
 		@Override
 		public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {

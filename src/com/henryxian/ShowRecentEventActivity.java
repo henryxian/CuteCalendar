@@ -55,7 +55,7 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 		};
 		String sortOrder = "dtstart DESC";
 		
-		Uri uri = Uri.parse("content://com.android.calendar/events");
+		Uri uri = Events.URI;
 		String[] projection = 
 				new String[] {
 				Events._ID,
@@ -133,16 +133,16 @@ public class ShowRecentEventActivity extends SherlockListActivity{
 		// set the listview adapter
 		getListView().setAdapter(adapter);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				// TODO Auto-generated method stub
 				ListView listView = (ListView)parent;
 				Cursor cursor = (Cursor)listView.getItemAtPosition(position);
-				String description = String.valueOf(cursor.getString(cursor.getColumnIndex("description")));
-				if (description != "null") {
-					Toast.makeText(ShowRecentEventActivity.this, description, Toast.LENGTH_SHORT).show();
+				String description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
+				// TODO: check if the desccription null
+				if (description != "") {
+					Toast.makeText(ShowRecentEventActivity.this, 
+							description, Toast.LENGTH_SHORT).show();
 				}
 			}
 			

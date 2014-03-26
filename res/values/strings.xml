@@ -70,5 +70,6 @@
     <string name="settings_reminder_dialogTitle">提醒方式</string>
     
     <string name="showDayEvent_label">当天事件</string>
+    <string name="showDayEVent_deleteFinished">删除成功</string>
     
 </resources>
