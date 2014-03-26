@@ -354,8 +354,8 @@ int id tabMode 0x7f080003
 int id text_date 0x7f080042
 int id text_display 0x7f080051
 int id text_display2 0x7f080052
-int id text_show_content 0x7f080050
-int id text_show_date 0x7f08004f
+int id text_show_content 0x7f08004f
+int id text_show_date 0x7f080050
 int id text_show_title 0x7f08004e
 int id textview 0x7f080036
 int id tv1 0x7f080055
@@ -457,6 +457,7 @@ int string pref_category_basic 0x7f060013
 int string settings_reminder_dialogTitle 0x7f060042
 int string settings_reminder_summary 0x7f060041
 int string settings_reminder_title 0x7f060040
+int string showAllEvents_label 0x7f060045
 int string showDayEVent_deleteFinished 0x7f060044
 int string showDayEvent_label 0x7f060043
 int string text_add_positive 0x7f060026

@@ -117,7 +117,8 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				startActivity(new Intent(CalendarActivity.this, ShowRecentEventActivity.class));
+//				startActivity(new Intent(CalendarActivity.this, ShowRecentEventActivity.class));
+				startActivity(new Intent(CalendarActivity.this, ShowAllEventsActivity.class));
 			}
 		});
 		button2.setOnClickListener(new OnClickListener() {
@@ -281,7 +282,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 			@Override
 			public void onLongClickDate(Date date, View view) {
 				registerForContextMenu(view);
-				mActionMode = startActionMode(new AnActionModeOfEpicProportions());
+//				mActionMode = startActionMode(new AnActionModeOfEpicProportions());
 				Intent intent = new Intent(CalendarActivity.this, AddEventActivity.class);
 				
 				/*

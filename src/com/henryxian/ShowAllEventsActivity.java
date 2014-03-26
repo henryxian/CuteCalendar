@@ -32,25 +32,17 @@ import com.henryxian.GCalendarContract.Events;
 import com.henryxian.GCalendarContract.Instances;
 
 @SuppressLint("NewApi")
-public class ShowDayEventActivity extends SherlockFragmentActivity {
-	
-	private int year;
-	private int month;
-	private int day;
+public class ShowAllEventsActivity extends SherlockFragmentActivity {
 	
 	@Override
 	protected void onCreate(Bundle saveInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(saveInstanceState);
 		
-		Intent intent = getIntent();
-		Bundle bundle = intent.getExtras();
-		
 		FragmentManager fm = getSupportFragmentManager();
 		
 		if (fm.findFragmentById(android.R.id.content) == null) {
 			CursorLoaderListFragment list = new CursorLoaderListFragment();
-			list.setArguments(bundle);
 			fm.beginTransaction().add(android.R.id.content, list).commit();
 		}
 	}
@@ -69,15 +61,9 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 			// TODO Auto-generated method stub
 			super.onActivityCreated(savedInstanceState);
 			
-			Bundle bundle = getArguments();
-			day = bundle.getInt("day");
-			month = bundle.getInt("month");
-			year = bundle.getInt("year");
-			Log.d(TAG,  "" + year);
-			
 			String[] from = {
-					Instances.BEGIN,
-					Instances.END,
+					Events._ID,
+					Events.DTSTART,
 					Events.TITLE,
 					Events.DESCRIPTION
 				};
@@ -104,18 +90,14 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 					String title;
 					String description;
 					long startTime;
-					long endTime;
 					
 					title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
 					description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
-					startTime = cursor.getLong(cursor.getColumnIndex(Instances.BEGIN));
-					endTime = cursor.getLong(cursor.getColumnIndex(Instances.END));
+					startTime = cursor.getLong(cursor.getColumnIndex(Events.DTSTART));
 					
-					Calendar calStart = Calendar.getInstance();
-					Calendar calEnd = Calendar.getInstance();
-					calStart.setTimeInMillis(startTime);
-					calEnd.setTimeInMillis(endTime);
-					SimpleDateFormat formatter = new SimpleDateFormat("kk:mm");
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(startTime);
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 					
 					TextView t1 = (TextView)view.findViewById(R.id.text_show_title);
 					TextView t2 = (TextView)view.findViewById(R.id.text_show_content);
@@ -123,8 +105,7 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 					
 					t1.setText(title);
 					t2.setText(description);
-					t3.setText(formatter.format(calStart.getTime()) + " - "
-							+ formatter.format(calEnd.getTime()));
+					t3.setText(formatter.format(cal.getTime()));
 				}
 			};
 			
@@ -135,7 +116,7 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 				public boolean onItemLongClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					Cursor c = (Cursor)parent.getItemAtPosition(position);
-					long eventId = c.getLong(c.getColumnIndex(Instances.EVENT_ID));
+					long eventId = c.getLong(c.getColumnIndex(Events._ID));
 					Uri deleteUri = ContentUris.withAppendedId(Events.URI, eventId);
 //					Toast.makeText(getActivity(), "id: " + eventId, Toast.LENGTH_SHORT).show();
 					new AsyncQueryHandler(getActivity().getContentResolver()) {
@@ -164,15 +145,24 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 			getLoaderManager().initLoader(0, null, this);
 		}
 	
-		static final String[] projection = {
-			Instances._ID,
-			Instances.EVENT_ID,
-			Instances.BEGIN,
-			Instances.END,
-			Events.TITLE,
-			Events.DESCRIPTION
+		static final long calendarId = 1;
+		static final String selection = " calendar_id = ? ";
+		static final String[] selectionArgs = 
+				new String[]{
+				Long.toString(calendarId)
 		};
 		
+		static final String sortOrder = "dtstart DESC";
+		
+		static final Uri uri = Events.URI;
+		static final String[] projection = 
+						new String[] {
+						Events._ID,
+						Events.TITLE,
+						Events.DTSTART,
+						Events.DESCRIPTION
+				};
+				
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
 			// TODO
@@ -185,7 +175,6 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 		
 		@Override
 		public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-			// TODO Auto-generated method stub
 			Uri baseUri = Instances.CONTENT_URI;
 			Uri.Builder builder = baseUri.buildUpon();
 			Calendar startTime = Calendar.getInstance();
@@ -199,11 +188,11 @@ public class ShowDayEventActivity extends SherlockFragmentActivity {
 			
 			return new CursorLoader(
 					getActivity(), 
-					builder.build(), 
+					uri,
 					projection, 
-					null, 
-					null, 
-					null
+					selection, 
+					selectionArgs,
+					sortOrder
 				);
 		}
 	

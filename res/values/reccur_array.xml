@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="reccur_array">
+        <item>無</item>
         <item>一個星期一次</item>
         <item>一個月一次</item>
     </string-array>

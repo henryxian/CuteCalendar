@@ -72,4 +72,6 @@
     <string name="showDayEvent_label">当天事件</string>
     <string name="showDayEVent_deleteFinished">删除成功</string>
     
+    <string name="showAllEvents_label">所有事件</string>
+    
 </resources>

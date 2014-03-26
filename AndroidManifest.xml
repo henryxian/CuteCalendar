@@ -61,6 +61,12 @@
         </activity>
         
         <activity
+            android:name=".ShowAllEventsActivity"
+            android:label="@string/showAllEvents_label"
+            >
+        </activity>
+        
+        <activity
             android:name=".ShowDayEventActivity"
             android:label="@string/showDayEvent_label"
             >

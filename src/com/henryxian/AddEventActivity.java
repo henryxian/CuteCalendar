@@ -138,6 +138,12 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		mTextStartTime = (TextView)findViewById(R.id.addEvent_text_startTime);
 		mTextEndTime = (TextView)findViewById(R.id.addEvent_text_endTime);
 		
+		Calendar cal = Calendar.getInstance();
+		startHour = cal.get(Calendar.HOUR_OF_DAY);
+		startMinute = cal.get(Calendar.MINUTE);
+		endHour = startHour;
+		endMinute = startMinute;
+		
 		if (bundle != null){
 			date = bundle.getString("Date");
 			
@@ -158,15 +164,12 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 //				textView.setText(cal.toString());
 			} 
 		} else {
-			Calendar cal = Calendar.getInstance();
+			cal = Calendar.getInstance();
 			year = cal.get(Calendar.YEAR);
 			// NOTICE here
 			month = cal.get(Calendar.MONTH);
 			day = cal.get(Calendar.DAY_OF_MONTH);
-			startHour = cal.get(Calendar.HOUR_OF_DAY);
-			startMinute = cal.get(Calendar.MINUTE);
-			endHour = startHour;
-			endMinute = startMinute;
+
 //			
 			String month2;
 			String day2;
@@ -328,11 +331,16 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 				long endMillis = 0;
 				Calendar calStart = Calendar.getInstance();
 				Calendar calEnd = Calendar.getInstance();
+				Log.d(TAG, "calStart: " + calStart);
+				Log.d(TAG, "calEnd: " + calEnd);
 				calStart.set(year, month, day, startHour, startMinute);
 				calEnd.set(year, month, day, endHour, endMinute);
 				startMillis = calStart.getTimeInMillis();
 				endMillis = calEnd.getTimeInMillis();
-				String rrule = reccur == 0 ? "FREQ=WEEKLY" : "FREQ=MONTHLY";
+				if (reccur != 0) {
+					String rrule = reccur == 1 ? "FREQ=WEEKLY" : "FREQ=MONTHLY";
+					cv.put(Events.RRULE, rrule);
+				}
 				
 				cv.put(Events.CALENDAR_ID, calId);
 				cv.put(Events.DTSTART, startMillis);
@@ -340,7 +348,6 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 				cv.put(Events.DESCRIPTION, mEditTextContent.getText().toString());
 				cv.put(Events.TITLE, mEditTextTitle.getText().toString());
 				// TODO rrule
-				cv.put(Events.RRULE, rrule);
 				myAsyncQueryHandler = new MyAsyncQueryHandler(AddEventActivity.this.getContentResolver());
 				myAsyncQueryHandler.startInsert(
 						0, 
