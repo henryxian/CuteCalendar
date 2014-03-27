@@ -322,6 +322,8 @@ public class AddClassActivity extends SherlockActivity implements
 			cv.put(Events.TITLE, className);
 			cv.put(Events.DTSTART, startMillis);
 			cv.put(Events.DTEND, endMillis);
+			// The frequency is weekly, and repeat several times from the 
+			// start time the event is set.
 			String rrule = "FREQ=WEEKLY;COUNT=" + (endWeek - startWeek + 1);
 			cv.put(Events.RRULE, rrule);
 			
@@ -333,17 +335,18 @@ public class AddClassActivity extends SherlockActivity implements
 						cv
 					);
 			
-			Toast.makeText(this, 
-					" ClassName " + className +
-					" classOrder: " + classOrder + 
-					" weekDay " + weekDay +
-					" startWeek " + startWeek +
-					" endWeek " + endWeek +
-					" startHour " + classStartHour +
-					" startMin " + classStartMin +
-					" endHour " + classEndHour +
-					" endMin " + classEndMin,
-					Toast.LENGTH_LONG).show();
+//			Toast.makeText(this, 
+//					" ClassName " + className +
+//					" classOrder: " + classOrder + 
+//					" weekDay " + weekDay +
+//					" startWeek " + startWeek +
+//					" endWeek " + endWeek +
+//					" startHour " + classStartHour +
+//					" startMin " + classStartMin +
+//					" endHour " + classEndHour +
+//					" endMin " + classEndMin,
+//					Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
