@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.MenuItem;
 import com.henryxian.GCalendarContract.Events;
 import com.henryxian.GCalendarContract.Instances;
 
@@ -40,6 +42,7 @@ public class ShowAllEventsActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle saveInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(saveInstanceState);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		String date = sp.getString("DatePreference", "2013-2-23");
@@ -58,6 +61,17 @@ public class ShowAllEventsActivity extends SherlockFragmentActivity {
 			list.setArguments(args);
 			fm.beginTransaction().add(android.R.id.content, list).commit();
 		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpTo(this, new Intent(this, CalendarActivity.class));
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 	
 	public static class CursorLoaderListFragment extends SherlockListFragment 

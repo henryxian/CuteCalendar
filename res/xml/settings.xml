@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory 
-        android:title="@string/pref_category_basic" >
-        
+
+    <PreferenceCategory android:title="@string/pref_category_basic" >
+
+        <!--
     <com.henryxian.TimePickerPreference 
         android:key="TimePreference"
         android:dialogMessage="message"
@@ -11,31 +12,37 @@
         android:negativeButtonText="cancel"
         android:title="@string/time_picker_title"
         android:summary="@string/time_picker_summary"
-        />	
-        <CheckBoxPreference
-                android:key="checkbox_preference"
-                android:title="test"
-                android:summary="test" />
-    <com.henryxian.DatePickerPreference
-        android:key="DatePreference"
-        android:dialogMessage="@string/date_picker_dialog_message"
-        android:dialogTitle="@string/date_picker_dialog_title"
-        android:positiveButtonText="@string/date_picker_positiveButtonText"
-        android:negativeButtonText="@string/date_picker_negativeButtonText"
-        android:title="@string/date_picker_title"
-        android:summary="@string/date_picker_summary"
-        android:defaultValue="2014-5-1"
-        />
-    
-    <ListPreference 
-        android:key="reminderMethod"
-        android:title="@string/settings_reminder_title"
-        android:summary="@string/settings_reminder_summary"
-        android:dialogTitle="@string/settings_reminder_dialogTitle"
-        android:entries="@array/reminderMethod_array"
-        android:entryValues="@array/reminderMethodValue_array"
-        android:defaultValue="0"
-        />
-    
-	</PreferenceCategory>
+        />	
+        -->
+        <com.henryxian.DatePickerPreference
+            android:defaultValue="2014-5-1"
+            android:dialogMessage="@string/date_picker_dialog_message"
+            android:dialogTitle="@string/date_picker_dialog_title"
+            android:key="DatePreference"
+            android:negativeButtonText="@string/date_picker_negativeButtonText"
+            android:positiveButtonText="@string/date_picker_positiveButtonText"
+            android:summary="@string/date_picker_summary"
+            android:title="@string/date_picker_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_reminder" >
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/settings_reminder_dialogTitle"
+            android:entries="@array/reminderMethod_array"
+            android:entryValues="@array/reminderMethodValue_array"
+            android:key="reminderMethod"
+            android:summary="@string/settings_reminder_summary"
+            android:title="@string/settings_reminder_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_readme" >
+        <PreferenceScreen
+            android:summary="@string/pref_intent_summary"
+            android:title="@string/pref_intent_title" >
+            <intent
+                android:targetPackage="com.henryxian"
+                android:targetClass="com.henryxian.ReadmeActivity"
+                 />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
 </PreferenceScreen>

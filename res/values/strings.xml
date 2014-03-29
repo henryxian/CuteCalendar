@@ -9,10 +9,13 @@
     <string name="title_activity_addClass">添加課程</string>
     
     <string name="pref_category_basic">基本設置</string>
+    <string name="pref_category_reminder">提醒</string>
+    <string name="pref_category_readme">使用說明</string>
+    <string name="pref_intent_title">說明</string>
+    <string name="pref_intent_summary">點擊查看使用說明</string>
     
     <string name="date_picker_title">日期</string>
-    <string name="date_picker_summary">選擇起始日期。注意：重置日期將會清空數據。
-        日期爲起始周的任一天。</string>
+    <string name="date_picker_summary">選擇本學期的起始日期。注意：日期爲起始周的任一天。</string>
     <string name="date_picker_dialog_title">日期</string>
     <string name="date_picker_dialog_message">日期</string>
     <string name="date_picker_positiveButtonText">確定</string>
@@ -73,5 +76,18 @@
     <string name="showDayEVent_deleteFinished">删除成功</string>
     
     <string name="showAllEvents_label">所有事件</string>
+    
+    <string name="readme_label">使用說明</string>
+    <string name="readme_content_title">以下爲簡單的使用說明：</string>
+    <string name="readme_content_body">
+		主界面點擊「十字圖標」添加事件。\n\n
+		主界面點擊「設置圖標」查看設置。\n\n
+		主界面點擊「學期事件」查看由學期開始到結束的所有事件。\n\n
+		主界面點擊「添加課程」添加課程。\n\n
+		主界面單擊日期格子可以查看當天的事件。\n\n
+		主界面长按日期格子可於所選日期添加事件。\n\n
+		事件展示界面長按事件可以刪除所選事件。\n\n
+		事件展示界面單擊事件可以查看事件的備註內容。\n\n
+    </string>
     
 </resources>

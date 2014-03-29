@@ -72,6 +72,13 @@
             >
         </activity>
         
+        <activity
+            android:name=".ReadmeActivity"
+            android:label="@string/readme_label"
+            >
+            
+        </activity>
+        
         <provider 
             android:name=".EventProvider"
             android:authorities="com.henryxian.EventProvider" 

@@ -9,10 +9,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.henryxian.GCalendarContract.Events;
 import com.henryxian.GCalendarContract.Reminders;
 
@@ -111,6 +114,7 @@ public class AddClassActivity extends SherlockActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_class);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// Set first class to default
 		setClass(0);
@@ -258,6 +262,16 @@ public class AddClassActivity extends SherlockActivity implements
 		});
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpTo(this, new Intent(this, CalendarActivity.class));
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
 	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
