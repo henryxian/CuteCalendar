@@ -6,9 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -35,7 +37,9 @@ public class CalendarActivity extends SherlockFragmentActivity {
 	private static final String TAG = CalendarActivity.class.getSimpleName();
 	
 	private SchoolWeekCalFragment schoolWeekCalFragment;
+	private boolean firsttimeFlag;
 	private ActionMode mActionMode;
+	private SharedPreferences sp;
 	
 	private void setDateColor(Date date, int count) {
 		if (count == 1) {
@@ -112,6 +116,7 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		// TODO
 		Button button = (Button)findViewById(R.id.customize_button);
 		Button button2 = (Button)findViewById(R.id.show_dialog_button);
+		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -137,8 +142,8 @@ public class CalendarActivity extends SherlockFragmentActivity {
 		// If activity is created from fresh
 		else {
 			// TODO initialize the calendar with preference
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 			String date = sp.getString("DatePreference", "2013-2-23");
+			firsttimeFlag = sp.getBoolean("flag", true);
 			Bundle args = new Bundle();
 			Calendar cal = Calendar.getInstance();
 			cal.setFirstDayOfWeek(Calendar.MONDAY);
@@ -317,6 +322,18 @@ public class CalendarActivity extends SherlockFragmentActivity {
 
 		// Setup Caldroid
 		schoolWeekCalFragment.setCaldroidListener(listener);
+		if (firsttimeFlag == true) {
+			sp.edit().putBoolean("flag", false).commit();
+			new AlertDialog.Builder(this).setPositiveButton("ok", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					startActivity(new Intent(CalendarActivity.this, SettingsActivity.class));
+				}
+			}).setTitle(R.string.calendar_firsttime_dialog_title)
+				.setMessage(R.string.calendar_firsttime_dialog_message).show();
+		}
 	}
 	
 	/**

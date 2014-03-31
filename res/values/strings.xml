@@ -90,4 +90,7 @@
 		事件展示界面單擊事件可以查看事件的備註內容。\n\n
     </string>
     
+    <string name="calendar_firsttime_dialog_title">提示</string>
+    <string name="calendar_firsttime_dialog_message">第一次使用請設置起始日期</string>
+    
 </resources>

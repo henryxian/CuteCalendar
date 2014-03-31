@@ -441,6 +441,8 @@ int string alertdialog_title 0x7f06002d
 int string app_name 0x7f060000
 int string button_add_class 0x7f06002c
 int string button_show_events 0x7f06002b
+int string calendar_firsttime_dialog_message 0x7f06004e
+int string calendar_firsttime_dialog_title 0x7f06004d
 int string date_picker_dialog_message 0x7f06001b
 int string date_picker_dialog_title 0x7f06001a
 int string date_picker_negativeButtonText 0x7f06001d
@@ -642,7 +644,7 @@ int styleable SherlockSearchView_android_inputType 1
 int styleable SherlockSearchView_android_maxWidth 0
 int styleable SherlockSearchView_iconifiedByDefault 3
 int styleable SherlockSearchView_queryHint 4
-int[] styleable SherlockSpinner { 0x010100af, 0x01010175, 0x01010176, 0x0101017b, 0x01010262, 0x010102ac, 0x010102ad, 0x0101043a }
+int[] styleable SherlockSpinner { 0x010100af, 0x01010175, 0x01010176, 0x0101017b, 0x01010262, 0x010102ac, 0x010102ad, 0x01010411 }
 int styleable SherlockSpinner_android_dropDownHorizontalOffset 5
 int styleable SherlockSpinner_android_dropDownSelector 1
 int styleable SherlockSpinner_android_dropDownVerticalOffset 6
