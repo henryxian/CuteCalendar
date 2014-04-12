@@ -2,6 +2,7 @@ package com.henryxian;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
@@ -11,9 +12,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +57,7 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 	private int day;
 	private int month;
 	private int year;
+	private int reminderMethod;
 	
 	private Spinner spinnerReminder;
 	private ArrayAdapter<CharSequence> adapterReminder;
@@ -80,6 +84,8 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 		
 		button = (Button)findViewById(R.id.button_add_positive);
 		button.setOnClickListener(new okButtonListener());
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		reminderMethod = Integer.parseInt(sp.getString("reminderMethod", "0"));
 		
 		// Set up the reminder spinner
 		spinnerReminder = (Spinner)findViewById(R.id.addEvent_spinner_reminder);
@@ -237,7 +243,7 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 			cv.put(Reminders.EVENT_ID, eventId);
 			cv.put(Reminders.MINUTES, minutes);
 			// METHOD DEFAULT
-			cv.put(Reminders.METHOD, Reminders.METHOD_DEFAULT);
+			cv.put(Reminders.METHOD, reminderMethod);
 			AddEventActivity.this.getContentResolver()
 				.insert(
 					Reminders.URI,
@@ -345,6 +351,7 @@ public class AddEventActivity extends SherlockFragmentActivity implements
 				cv.put(Events.CALENDAR_ID, calId);
 				cv.put(Events.DTSTART, startMillis);
 				cv.put(Events.DTEND, endMillis);
+				cv.put(Events.TIMEZONE, TimeZone.getDefault().getID());
 				cv.put(Events.DESCRIPTION, mEditTextContent.getText().toString());
 				cv.put(Events.TITLE, mEditTextTitle.getText().toString());
 				// TODO rrule

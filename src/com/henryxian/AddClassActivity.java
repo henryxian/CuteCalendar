@@ -1,6 +1,7 @@
 package com.henryxian;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
@@ -56,6 +57,7 @@ public class AddClassActivity extends SherlockActivity implements
 	private int classOrder;
 	private int weekDay;
 	private int reminder;
+	private int reminderMethod;
 	
 	private int classStartHour;
 	private int classStartMin;
@@ -124,6 +126,11 @@ public class AddClassActivity extends SherlockActivity implements
 		sessionStartDay = DatePickerPreference.getDay(sessionStartDate);
 		sessionStartMonth = DatePickerPreference.getMonth(sessionStartDate);
 		sessionStartYear = DatePickerPreference.getYear(sessionStartDate);
+		
+		reminderMethod = Integer.parseInt(sharedPreferences.getString("reminderMethod", "0"));
+//		Toast.makeText(this, reminderMethod + "", Toast.LENGTH_SHORT).show();
+//		reminderMethod = sharedPreferences.getInt("reminderMethod", 0);
+//		Toast.makeText(this, reminderMethod + "", Toast.LENGTH_SHORT).show();
 		
 		this.editTextClassName = (EditText)findViewById(R.id.addClass_editText_className);
 		// set up the class order spinner
@@ -333,6 +340,7 @@ public class AddClassActivity extends SherlockActivity implements
 			
 			ContentValues cv = new ContentValues();
 			cv.put(Events.CALENDAR_ID, 1);
+			cv.put(Events.TIMEZONE, TimeZone.getDefault().getID());
 			cv.put(Events.TITLE, className);
 			cv.put(Events.DTSTART, startMillis);
 			cv.put(Events.DTEND, endMillis);
@@ -380,7 +388,7 @@ public class AddClassActivity extends SherlockActivity implements
 				ContentValues cv = new ContentValues();
 				cv.put(Reminders.EVENT_ID, eventId);
 				cv.put(Reminders.MINUTES, reminder);
-				cv.put(Reminders.METHOD, Reminders.METHOD_DEFAULT);
+				cv.put(Reminders.METHOD, reminderMethod);
 				AddClassActivity.this.getContentResolver()
 					.insert(Reminders.URI, cv);
 			}

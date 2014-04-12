@@ -23,6 +23,7 @@ public final class GCalendarContract {
 		public static final String DTSTART = "dtstart";
 		public static final String DTEND = "dtend";
 		public static final String RRULE = "rrule";
+		public static final String TIMEZONE = "eventTimezone";
 	}
 	
 	public static abstract class Reminders {
