@@ -2,6 +2,9 @@
 <resources>
     <string-array name="reminderMethod_array">
         <item>默認</item>
-        <item>SMS</item>
+        <item>普通提醒</item>
+        <item>邮件</item>
+        <item>短信</item>
+       <!-- <item>闹钟</item> -->
     </string-array>
 </resources>
